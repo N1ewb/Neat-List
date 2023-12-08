@@ -1,7 +1,10 @@
 import React from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { AuthProvider, useAuth } from '../context/AuthContext'
 
 import UnauthHeader from '../components/UnauthHeader'
+import Header from '../components/Header'
 import LoginBG from '../images/loginbg.png'
 import TaskImg from '../images/task-organize.jpg'
 import UserFriendlyImg from '../images/user-friendly.png'
@@ -10,35 +13,76 @@ import SearchImg from '../images/two-tiny-characters-examining-big-cloud_74855-1
 import Organized from '../images/pexels-photo-4360353.jpeg'
 
 import './LandingPage.css'
+import '../App.css'
 
 
-const LandingPage = () => {
+const LandingPage = ({value}) => {
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const auth = useAuth()
+    useEffect(() => {
+        const dataAlreadyLoaded = localStorage.getItem('dataLoaded');
+
+        if (!dataAlreadyLoaded) {
+          async function fetchData() {
+            try {
+              console.log('hello');
+              await new Promise(resolve => setTimeout(resolve, 500));
+              setLoading(false);
+              localStorage.setItem('dataLoaded', 'true');
+            } catch (error) {
+              setError(error.message);
+              setLoading(false);
+            }
+          }
+    
+          fetchData();
+        } else {
+          setLoading(false);
+        }
+    }, []); 
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
   return (
     <>
-        <UnauthHeader/>
+        <AuthProvider>
+        {auth.currentUser ?<Header /> : <UnauthHeader/>}
         <div className='landingpage-container' style={{backgroundColor:"#545763"}}>
             <section className='first-section' style={{backgroundImage:`url(${LoginBG})`}}>
-                <div className='content landing-left'>
+                <div className='landing-content landing-left'>
                     <div className='landing-logo-wrapper'> 
                         <p>Neat <span>List</span></p>
                     </div>
                     <div className='brief-intro'>
                         <p>Your go-to task manager for streamlined productivity, offering intuitive features to organize tasks and boost efficiency effortlessly, empowering you to stay focused and achieve more.</p>
                     </div>
+                    {auth.currentUser ?
+                        <Link to={'/Home'}>
+                            <button className='get-started'>Get Started</button>
+                        </Link>
+                    : 
                     <Link to={'/LoginPage'}>
                         <button className='get-started'>Get Started</button>
                     </Link>
+                    }
+                    
                 </div>
-                <div className='content landing-right'>
+                <div className='landing-content landing-right'>
 
                 </div>
             </section>
-            <section className='second-section'>
+            <section id="second-section" className='second-section'>
                 <div className='motto'>
                     <p>Your streamlined task manager for effortless productivity and organized living.</p>
                 </div>
             </section>
-            <section className='third-section'>
+            <section id="third-section" className='third-section'>
                 <div className='neatlist-features-container'>
                     <div className='landing-title-container'>
                         <div className='landing-title'><h1>Neat List Features</h1></div>
@@ -60,7 +104,7 @@ const LandingPage = () => {
 
                         <div className='feature-card'>
                             <div className='feature-img'>
-                                <img src={UserFriendlyImg} />
+                                <img src={UserFriendlyImg} alt="user friendly"/>
                             </div>
                             <div className='feature-title'>
                                 <h3>User-Friendly Interface</h3>
@@ -72,7 +116,7 @@ const LandingPage = () => {
 
                         <div className='feature-card'>
                             <div className='feature-img'>
-                                <img src={NotifImg} />
+                                <img src={NotifImg} alt="reminder"/>
                             </div>
                             <div className='feature-title'>
                                 <h3>Reminders and Notifications</h3>
@@ -84,7 +128,7 @@ const LandingPage = () => {
 
                         <div className='feature-card'>
                             <div className='feature-img'>
-                                <img src={SearchImg} />
+                                <img src={SearchImg} alt="searching" />
                             </div>
                             <div className='feature-title'>
                                 <h3>Smart Filters and Search</h3>
@@ -98,7 +142,7 @@ const LandingPage = () => {
 
                 </div>
             </section>
-            <section className='fourth-section'>
+            <section id="fourth-section" className='fourth-section'>
                 <div className='about-neat-list-container'>
                     <div className='landing-title-container'>
                         <div className='landing-title'>
@@ -119,6 +163,7 @@ const LandingPage = () => {
                 </div>
             </section>
         </div>
+        </AuthProvider>
     </>
   )
 }

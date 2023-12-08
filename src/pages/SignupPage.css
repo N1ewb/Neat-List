@@ -4,16 +4,94 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 }
 .sign-up{
     height: 100vh;
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     background-repeat: no-repeat;
     background-position: bottom;
     background-size: cover;
     box-shadow:1px 1px 3px 1px black;
     color: white;
+}
+.left{
+    width: 50%;
+}
+@media screen and (max-width: 720px) {
+    .sign-up{
+        display: flex;
+        flex-direction: column;
+        background-position: bottom;
+    }
+    .left{
+        width: 80%;
+    }
+    .right{
+        width: 20%;
+    }
+    .signin-form input{
+        height: 50%;
+    }
+}
+@media screen and (max-width: 485px) {
+    .sign-up{
+        display: flex;
+        flex-direction: column;
+        background-position: bottom;
+    }
+    .left{
+        width: 100%;
+    }
+    .right{
+        width: 0px;
+    }
+    .signin-form input[type='text'],
+    .signin-form input[type='email'],
+    .signin-form input[type='password'] {
+        height: 35px;
+    }
+    .sign-in-buttons button{
+        height: 35px;
+    }
+    .with-google{
+        height: 35px;
+        display: flex;
+        gap:1px;
+        align-items: center;
+        padding: 1.5px;
+    }
+    .with-google span{
+        font-size: 12px;
+    }
+    .with-google p img{
+        background-color: white;
+        border-radius: 2px;
+        width: 15px;
+        height: 15px;
+    }
+    .signin-form-container-heading{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+    }
+    .signin-form-container-heading-wrapper{
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        font-size: 70%;
+    }
+    .signin-form-container-heading-wrapper p span{
+        background-color: #000320;
+        text-decoration: dashed;
+        color: white;
+        padding: 3px;
+        border-radius: 8px;
+    }
 }
 .fullname {
     display: flex;
@@ -88,11 +166,34 @@
 }
 .signin-form i{
     position: relative;
-    top: 13%;
-    left:40%;
+    top: 10%;
+    left:41%;
 }
+.fullname input[name='First-Name'] {
+    margin-right: 10px;
+  }
 .fullname i{
     position: relative;
     top: 33%;
-    left:38%;
+    left:37%;
+    height: 0px;
+    width: 0px;
+}
+.signin-form-container-heading{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.signin-form-container-heading-wrapper{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.signin-form-container-heading-wrapper p span{
+    background-color: #000320;
+    text-decoration: dashed;
+    color: white;
+    padding: 3px;
+    border-radius: 8px;
 }

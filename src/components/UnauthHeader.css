@@ -5,6 +5,7 @@
     justify-content: center;
     background-color: #23252b;
     position: fixed;
+    transition: 300ms ease-in-out;
 }
 .unauth-nav-bar{
     display: flex;
@@ -30,8 +31,21 @@
 .nav-links{
     font-family: 'Genos', sans-serif;
     display: flex;
-    justify-content: space-between;
-    width: 200px;
+    gap:150px;
+    width: 50%;
+    font-size: 20px;
+}
+.nav-links a{
+    margin-left: 15px;
+    color: white;
+    text-decoration: none;
+    transition: 200ms ease-in-out;
+    padding: 0px 5px 2px 5px;
+    border-radius: 5px;
+}
+.nav-links a:hover{
+    background-color: #000320;
+    scale: 1.1;
 }
 /* .nav-links :nth-child(1){
     border: 1px solid white;

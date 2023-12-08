@@ -1,6 +1,15 @@
-.auth-header-container{
-    height: 3.375rem;
-    width: 100%;
+.auth-nav-links{
+    width: 500px;
     display: flex;
-    background-color: #232323;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+.dropdown{
+    width: 50px;
+}
+.dropdown-content{
+    color: white;
+    display: flex;
+    flex-direction: column;
 }

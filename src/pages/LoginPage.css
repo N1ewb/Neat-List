@@ -73,9 +73,7 @@
 .content {
     display: flex;
     flex-direction: column;
-    width: 50%;
-    gap: 120px;
-    
+    gap: 120px; 
 }
 .left {
     background-size: cover;

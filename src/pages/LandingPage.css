@@ -41,6 +41,10 @@
     padding: 50px;
     background-color:rgb(0, 0, 0,0.7);
 }
+.landing-content{
+    display: flex;
+    flex-direction: column;
+}
 .brief-intro{
     width: 70%;
     
@@ -83,16 +87,18 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    background-color: #d4d4d4;    
+    background-color: #000320;    
     align-items: center;
-    margin-top: 20px;
+    margin-top: 50px;
     margin-bottom: 20px;
+    
 }
 .landing-title{
     width: 80%;
     font-size: 35px;
-    color: black;
+    color: white;
 }
+
 .feature-card-container{
     display: flex;
     flex-direction: row;
@@ -159,4 +165,31 @@
     color: white;
     padding: 0px 10px 5px 10px;
     border-radius: 10px;
+}
+@media screen and (max-width:485px) {
+    .landing-left{
+        width: 100%;
+    }
+    .landing-right{
+        width: 0px;
+    }
+    .landing-title h1{
+        text-align: center;
+    }
+    .about-neat-list{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .about-neat-list img{
+        height: 200px;
+        width: auto;
+    }
+    .about-logo-wrapper{
+        text-align: center;
+    }
+    .about-description {
+        width: 100%;
+        padding: 20px;
+    }
 }
