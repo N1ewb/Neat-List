@@ -1,5 +1,5 @@
 import React, { useContext, createContext } from 'react';
-import { addDoc, collection, deleteDoc, getDocs,onSnapshot,doc, updateDoc, orderBy, query, QuerySnapshot } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, getDocs,onSnapshot,doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import toast, { Toaster } from 'react-hot-toast';
 

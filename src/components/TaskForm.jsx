@@ -58,9 +58,9 @@ const TaskForm = () => {
                 <label htmlFor="priority-lvl">Priority Level</label>
                 <select id="priority-lvl" ref={priorityRef}>
                     <option value=""></option>
-                    <option type='number' value="1">Basic</option>
-                    <option type='number' value="2">Important</option>
-                    <option type='number' value="3">Urgent</option>
+                    <option type='number' value="1">Low</option>
+                    <option type='number' value="2">High</option>
+                    <option type='number' value="3">Critical</option>
                 </select>
                 <label htmlFor="deadline">Set Deadline:</label>
                 <input type="date" id="deadline" name="deadline" ref={deadlineRef}></input>
