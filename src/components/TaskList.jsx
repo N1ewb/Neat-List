@@ -65,10 +65,8 @@ const TaskList = () => {
     const filterCategory = async (category) => {
         if(category){
             const filtered = temp.filter(task => task.category === category);
-            console.log(filtered)
             setTaskLists(filtered)
         } else {
-            console.log(temp)
             setTaskLists(temp)
         }
     };
