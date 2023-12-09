@@ -21,7 +21,7 @@ export const DBProvider = ({ children }) => {
             addSuccess();
         } catch (error) {
             console.log(error)
-            notifyError()
+            notifyError(error)
         }
     };
 

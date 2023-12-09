@@ -6,6 +6,7 @@ const UnauthHeader = () => {
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
     const navigate = useNavigate()
+
   const handleClick = (e, sectionId) => {
     if (location.pathname !== `/`) {
       e.preventDefault();
@@ -13,7 +14,7 @@ const UnauthHeader = () => {
       
     } else {
       const section = document.getElementById(sectionId);
-      navigate(`/${section}`)
+      navigate(`/`)
       if (section) {
         section.scrollIntoView({ behavior: 'smooth' });
       }

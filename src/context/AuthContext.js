@@ -20,10 +20,16 @@ export const AuthProvider = ({ children  }) => {
     const notifyError = (error) => toast(error.message)
 
 
-    const SignIn = (email, password) => {
+    const SignIn = async (email, password) => {
       if (!currentUser) {
-        notifyLogin()
-        return signInWithEmailAndPassword(auth, email, password)
+       try{
+        if(currentUser){
+          notifyLogin()
+        }
+        return await signInWithEmailAndPassword(auth, email, password)
+       } catch (error) {
+        notifyError(error)
+       }
       } else {
         return notifyAlreadyLoggedIn()
       }

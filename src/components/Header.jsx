@@ -74,7 +74,7 @@ const Header = () => {
                         
                             <a href="#third-section" onClick={(e) => handleClick(e, 'third-section')}>Features</a>
                             <a href="#fourth-section" onClick={(e) => handleClick(e, 'fourth-section')}>About</a>
-                            <Link to='/Home'>Home</Link>
+                            <Link to='/Dashboard'>Dashboard</Link>
                             <div className="dropdown">
                               <button onClick={toggleDropdown} className="dropbtn">
                                 Profile

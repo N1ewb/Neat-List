@@ -63,7 +63,7 @@ const LandingPage = ({value}) => {
                         <p>Your go-to task manager for streamlined productivity, offering intuitive features to organize tasks and boost efficiency effortlessly, empowering you to stay focused and achieve more.</p>
                     </div>
                     {auth.currentUser ?
-                        <Link to={'/Home'}>
+                        <Link to={'/dashboard'}>
                             <button className='get-started'>Get Started</button>
                         </Link>
                     : 

@@ -1,9 +1,43 @@
-.task-form{
+/* CSS for TaskForm component */
+.task-form {
     display: flex;
     flex-direction: column;
-    text-align: center;
-    padding: 10px;
-    background-color: black;
-    color: white;
-    gap:10px;
-}
+    gap: 10px;
+  }
+  
+  .task-form input,
+  .task-form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .task-form label {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .modal-footer {
+    justify-content: space-between;
+    padding: 20px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .modal-header {
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .modal-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .modal-content {
+    border-radius: 8px;
+  }
+  

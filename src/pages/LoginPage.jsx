@@ -28,7 +28,7 @@ const LoginPage = () => {
     
     useEffect(()=>{
         if(auth.currentUser){
-            navigate('/Home')
+            navigate('/dashboard')
         }
     },[auth.currentUser, navigate])
 
