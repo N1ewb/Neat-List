@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { DBProvider, useDB } from '../context/dbContext'
 import { useAuth } from '../context/AuthContext'
 
@@ -12,14 +12,15 @@ const TaskList = () => {
     const [tasksList, setTaskLists] = useState([])
     const [temp, setTemp] = useState()
     const [editableCell, setEditableCell] = useState(null);
-    const [filteredTasks, setFilteredTasks] = useState([]);
     const [sort, setSort] = useState('')
     const sortedTasks = [...tasksList];
 
-    const handleGetTasks = async () => {
+    const handleGetTasks = useCallback (async () => {
         const tasks = await db.getTask()
-        setTaskLists(tasks)
-    };
+        setTemp(tasks)
+        return tasks
+        
+    },[db]);
     
     const sortDeadlineAsc = () => {
         sortedTasks.sort((a, b) => {
@@ -120,14 +121,24 @@ const TaskList = () => {
         return formattedDate;
       };
     
-    useEffect(()=>{
-        handleGetTasks();
-        setTemp(tasksList)
-        const unsubscribe = db.subscribeToTasksChanges((updatedTasks) => {
-            setTaskLists(updatedTasks);
-        });
-        return () => unsubscribe();
-    },[db])
+      useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const tasks = await handleGetTasks();
+                setTaskLists(tasks);
+    
+                const unsubscribe = db.subscribeToTasksChanges((updatedTasks) => {
+                    setTaskLists(updatedTasks);
+                });
+                return () => unsubscribe();
+            } catch (error) {
+                db.notifyError(error)
+            }
+        };
+    
+        fetchData();
+    }, [db, handleGetTasks]);
+    
 
   return (
     <>
