@@ -2,6 +2,7 @@ import React, { useContext, createContext } from 'react';
 import { addDoc, collection, deleteDoc, getDocs,onSnapshot,doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import toast, { Toaster } from 'react-hot-toast';
+import { useAuth } from './AuthContext';
 
 const dbContext = createContext();
 
@@ -11,33 +12,34 @@ export function useDB() {
 
 export const DBProvider = ({ children }) => {
     const tasksCollectionRef = collection(db, 'Tasks');  
-
+    const auth = useAuth()
     const addSuccess = () => toast('Task Added');
-    const notifyError = (errorMessage) => toast(errorMessage)
+    const notifyError = (error) => toast(error.message);
 
     const AddTask = async (name, category, priority, deadline, Timestamp, status, userID) => {
         try {
             await addDoc(tasksCollectionRef, { name, category, priority, deadline, Timestamp, status,user: userID });
             addSuccess();
         } catch (error) {
-            console.log(error)
-            notifyError(error)
+            return notifyError(error)
         }
     };
 
-    const getTask = async () => {
+        const getUserTask = async (uid) => {
         try {
           const tasksSnapshot = await getDocs(tasksCollectionRef);
           const tasks = tasksSnapshot.docs.map((doc) => ({
             ...doc.data(),
             id: doc.id,
           }));
-          return tasks
+          
+          const userTasks = tasks.filter((task) => task.user === uid);
+          return userTasks;
         } catch (error) {
-          return notifyError(error)
+          return notifyError(error);
         }
       };
-
+      
       const deleteTask = async (id) => {
         try{
             const taskDoc = doc(db,'Tasks', id)
@@ -68,24 +70,26 @@ export const DBProvider = ({ children }) => {
       }
 
       const subscribeToTasksChanges = (callback) => {
-        const unsubscribe = onSnapshot(tasksCollectionRef, (snapshot) => {
-            const updatedTasks = snapshot.docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-            }));
-            callback(updatedTasks);
-        });
-
-        return unsubscribe;
-    };
+        if(auth.currentUser){
+            const unsubscribe = onSnapshot(tasksCollectionRef, (snapshot) => {
+                const updatedTasks = snapshot.docs.map((doc) => ({
+                  ...doc.data(),
+                  id: doc.id,
+                }));
+                const updatedUserTask = updatedTasks.filter((task) => task.user === auth.currentUser.uid);
+                callback(updatedUserTask);
+              }, auth.currentUser.uid);
+              return unsubscribe;
+        }
+      };
     const value = {
         AddTask,
-        getTask,
         deleteTask,
         markTaskComplete,
         subscribeToTasksChanges,
         notifyError,
-        editTableTd
+        editTableTd,
+        getUserTask
     };
 
     return (

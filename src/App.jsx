@@ -7,7 +7,6 @@ import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { DBProvider } from './context/dbContext';
 function App() {
   return (

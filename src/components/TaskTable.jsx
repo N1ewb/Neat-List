@@ -1,69 +1,17 @@
 import React, {useState, useEffect} from 'react'
-import CatergoryIcon from '../images/icons8-category-50.png'
+
 import { useAuth } from '../context/AuthContext';
 import { useDB } from '../context/dbContext';
 
 import './TaskTable.css'
 
-const TaskTable = ({temp, taskslist, sortedTasks}) => {
+const TaskTable = ({ taskslist, currentLayout, CompletedIcon, PendingIcon,EditIcon }) => {
     const auth = useAuth()
     const db = useDB()
     const [editableCell, setEditableCell] = useState(null);
-    const [sort, setSort] = useState('')
     const [tasksList, setTaskLists] = useState([])
-
-    
-
-    const sortDeadlineAsc = () => {
-        sortedTasks.sort((a, b) => {
-            return new Date(a.deadline) - new Date(b.deadline);
-        });
-        setTaskLists(sortedTasks);
-        setSort('deadlineAsc');
-    };
-    
-    const sortDeadlineDesc = () => {
-        sortedTasks.sort((a, b) => {
-            return new Date(b.deadline) - new Date(a.deadline);
-        });
-        setTaskLists(sortedTasks);
-        setSort('deadlineDesc');
-    };
-
-    const sortPrioAsc = async () => {
-        sortedTasks.sort((a, b) => a.priority - b.priority);
-        setTaskLists(sortedTasks);
-        setSort('sortedAsc')
-    }
-
-    const sortPrioDesc = () => {
-        sortedTasks.sort((a, b) => b.priority - a.priority);
-        setTaskLists(sortedTasks);
-        setSort('sortedDesc')
-    }
-    
-    const sortCreatedAsc = async () => {
-        sortedTasks.sort((a, b) => a.Timestamp- b.Timestamp);
-        setTaskLists(sortedTasks)
-        setSort('createdAsc')
-    }
-
-    const sortCreatedDesc = async () => {
-        sortedTasks.sort((a, b) => b.Timestamp - a.Timestamp);
-        setTaskLists(sortedTasks)
-        setSort('createdDesc')
-    }
-    
-
-    const filterCategory = async (category) => {
-        if(category){
-            const filtered = temp.filter(task => task.category === category);
-            setTaskLists(filtered)
-        } else {
-            setTaskLists(temp)
-        }
-    };
-    
+    const [loading, setLoading] = useState(true);
+    const [initialState, setInitialState] = useState(false)
 
     const handleEditTableTd = (index) => {
         setEditableCell(index); 
@@ -75,13 +23,14 @@ const TaskTable = ({temp, taskslist, sortedTasks}) => {
 
     const handleDeleteTask = async (id) => {
         await db.deleteTask(id)
+        setEditableCell(null)
     }
-
-    
 
     const handleMarkTaskComplete = async (id) => {
         db.markTaskComplete(id)
+        setEditableCell(null)
     }
+
     const getPriorityString = (priority) => {
         switch (priority) {
             case '1':
@@ -112,88 +61,83 @@ const TaskTable = ({temp, taskslist, sortedTasks}) => {
       
         return formattedDate;
       };
-
+      
+      useEffect(() => {
+        if (taskslist && taskslist.length > 0) {
+          setLoading(false); 
+        }
+      }, [taskslist]);
+      
       useEffect(() => {
         const getTaskList = async () => {
-            try {
+          try {
+            if(currentLayout === 'table'){
                 setTaskLists(taskslist);
+              if(!initialState){
                 const unsubscribe = db.subscribeToTasksChanges((updatedTasks) => {
                     setTaskLists(updatedTasks);
+                    setInitialState(true)
                 });
-                return () => unsubscribe(); 
-            } catch (error) {
-                db.notifyError(error);
+                return () => unsubscribe();
+              } else {
+                const unsubscribe = db.subscribeToTasksChanges((updatedTasks) => {
+                    setTaskLists(taskslist);
+                });
+                return () => unsubscribe();
+              }
             }
+          } catch (error) {
+            db.notifyError(error); 
+          } 
         };
-        getTaskList(); 
-    }, [taskslist, db]);
-    
-
+        getTaskList();
+       }, [taskslist, db,currentLayout]);
+       
   return (
     <>
         <div className='task-table'>
-        <table>
-        <thead>
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Category <img src={CatergoryIcon} alt="category" height='20px' width='auto'/> 
-                <select id="category" 
-                    onChange={(e) => {
-                        const selectedCategory = e.target.value;
-                        filterCategory(selectedCategory);
-                    }}
-                >
-                    <option value=""></option>
-                    <option value="work">Work</option>
-                    <option value="personal">Personal</option>
-                    <option value="study">Study</option>
-                </select>
-                </th>
-                <th>Priority {sort === 'sortedAsc'? <button onClick={()=>sortPrioDesc()}>△</button>:<button onClick={() => sortPrioAsc()}>▽</button>}</th>
-                <th>DeadLine {sort === 'deadlineAsc'? <button onClick={()=>sortDeadlineDesc()}>△</button>:<button onClick={() => sortDeadlineAsc()}>▽</button>}</th>
-                <th>Date Created  {sort === 'createdAsc'? <button onClick={()=>sortCreatedDesc()}>△</button>:<button onClick={() => sortCreatedAsc()}>▽</button>}</th>
-                <th>Status</th>
-                <th>Delete</th>
-                <th>Edit</th>
-            </tr>
-        </thead>
-        <tbody>
-        {tasksList?tasksList.map((task,index) => (
-        (task.user === auth.currentUser.uid) ? (
-            <tr key={task.id}>
-                {task.status === false ? (
-                        <td><button onClick={() => handleMarkTaskComplete(task.id)}>✔</button></td>
-                    ) : (
-                        <td>✔</td>
-                    )}
-                <td name='name' onClick={() => handleEditTableTd(index)}>
-                {editableCell === index ? (
-                    <input
-                        type='text'
-                        value={task.name}
-                        onChange={(e) => {
-                        e.preventDefault()
-                        const newValue = e.target.value;
-                        setTaskLists((prevTasks) =>
-                            prevTasks.map((t, i) =>
-                            i === index ? { ...t, name: newValue } : t
-                            )
-                        );
-                        }}
-                        onBlur={(e) => {
-                            const newValue = e.target.value;
-                            saveEditedCellValue(task.id, 'name',newValue);
-                            handleEditTableTd(null); 
-                        }}
-                    />
-                ) : (
-                    task.name
-                )}
-                </td>
-                <td onClick={() => handleEditTableTd(index)}>
+        <div className="card-container">
+            {tasksList ? (
+                tasksList.map((task, index) =>
+                task.user === auth.currentUser.uid ? (
+                    <div key={task.id} className="card">
+
+                    <div className="card-item status">
+                        {task.status === false ? (
+                            <img src={PendingIcon} alt='pending' height='20px'/>
+                        ) : (
+                            <img src={CompletedIcon} alt='Completed' height='20px'/>
+                        )}
+                    </div>
+
+                    <div className="card-item-name">
+                        {editableCell === index ? (
+                            <input
+                                type='text'
+                                value={task.name}
+                                onChange={(e) => {
+                                e.preventDefault()
+                                const newValue = e.target.value;
+                                setTaskLists((prevTasks) =>
+                                    prevTasks.map((t, i) =>
+                                    i === index ? { ...t, name: newValue } : t
+                                    )
+                                );
+                                }}
+                                onBlur={(e) => {
+                                    const newValue = e.target.value;
+                                    saveEditedCellValue(task.id, 'name',newValue);
+                                    handleEditTableTd(null); 
+                                }}
+                            />
+                        ) : (
+                            <span>{task.name}</span>
+                        )}
+                    </div>
+                    
+                    <div className='card-item category'>Category: 
                     {editableCell === index ? (
-                        <select id="category" type='text' value={task.category}
+                        <select className="category" type='text' value={task.category}
                             onChange={(e) => {
                                 e.preventDefault();
                                 const newCategoryValue = e.target.value;
@@ -215,57 +159,63 @@ const TaskTable = ({temp, taskslist, sortedTasks}) => {
                             <option value="study">Study</option>
                         </select>
                     ) : (
-                        task.category
+                        " " + task.category
                     )}
-                </td>
-                <td onClick={()=>{handleEditTableTd(index)}}>
-                    {editableCell === index? (
-                    <select id="priority-lvl" type='number' value={task.priority}
-                        onChange={(e) => {
-                            e.preventDefault();
-                            const newPriorityValue = e.target.value;
-                            setTaskLists((prevTasks) =>
-                                prevTasks.map((t, i) =>
-                                    i === index ? { ...t, priority: newPriorityValue} : t
+                    </div>
+
+                    <div className='card-item' style={{ color: task.priority === '1' ? '#58d332' : task.priority === '2' ? '#E2BE00' : task.priority === '3' ? '#9D0000' : 'green' }} >
+                        {editableCell === index? (
+                        <select className="priority-lvl" type='number' value={task.priority}
+                            onChange={(e) => {
+                                e.preventDefault();
+                                const newPriorityValue = e.target.value;
+                                setTaskLists((prevTasks) =>
+                                    prevTasks.map((t, i) =>
+                                        i === index ? { ...t, priority: newPriorityValue} : t
+                                    )
+                                );
+                            }}
+                            onBlur={(e) => {
+                                const newPriorityValue = e.target.value;
+                                saveEditedCellValue(task.id, 'priority', newPriorityValue);
+                                handleEditTableTd(null); 
+                            }}
+                        >
+                            <option value=""></option>
+                            <option type='number' value="1">Low</option>
+                            <option type='number' value="2">High</option>
+                            <option type='number' value="3">Critical</option>
+                        </select>
+                        ):
+                        getPriorityString(task.priority)}
+                    </div>
+
+                    <div className='card-item-user-action'>
+                    <div className='card-item mark-complete'>
+                        {editableCell === index? <button onClick={()=>handleMarkTaskComplete(task.id)}>Check</button>: <div></div>}
+                    </div>
+                    <div className='card-item delete-button'>
+                        {editableCell === index? <button onClick={()=>handleDeleteTask(task.id)}>Delete</button>: <div></div>}
+                    </div>
+                    <div className="card-item edit-button">
+                        {task.status ? <div></div> : (
+                            (
+                                editableCell === index ? (
+                                    <button onClick={() => {setEditableCell(null); handleEditTableTd(null);}}>Save</button>
+                                ) : (
+                                    <button onClick={() => setEditableCell(index)}><img src={EditIcon} alt='edit-icon' height='30px'/></button>
                                 )
-                            );
-                        }}
-                        onBlur={(e) => {
-                            const newPriorityValue = e.target.value;
-                            saveEditedCellValue(task.id, 'priority', newPriorityValue);
-                            handleEditTableTd(null); 
-                        }}
-                    >
-                        <option value=""></option>
-                        <option type='number' value="1">Low</option>
-                        <option type='number' value="2">High</option>
-                        <option type='number' value="3">Critical</option>
-                    </select>
-                    ):
-                    getPriorityString(task.priority)}
-                </td>
-                <td>{task.deadline}</td>
-                <td>{getFormattedDate(task.Timestamp.seconds)}</td>
-                <td>{getStatus(task.status)}</td>
-                <td>
-                    <button onClick={() => handleDeleteTask(task.id)}>Delete</button>
-                </td>
-                <td>{editableCell === index ? (
-                    <button onClick={() => {
-                        setEditableCell(null);
-                        handleEditTableTd(null)
-                    }}>Save</button>
-                    ) : (
-                        <button onClick={() => setEditableCell(index)}>Edit</button>
-                    )}
-                </td>
-            </tr>
-            ) : (
-                null 
+                            )
+                        )}
+                    </div>
+                    </div>
+                    
+                    </div>
+                ) : null
                 )
-            )):null }
-        </tbody>
-    </table>
+            ) : null}
+            </div>
+
         </div>
     </>
   )

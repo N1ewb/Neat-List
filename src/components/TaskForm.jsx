@@ -5,7 +5,7 @@ import { Timestamp } from 'firebase/firestore'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import './TaskForm.css'
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 const TaskForm = ({show, handleClose}) => {
     const db = useDB()
     const auth = useAuth()

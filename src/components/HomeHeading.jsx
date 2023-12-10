@@ -5,7 +5,7 @@ const CircularProgressBar = ({ percentage }) => {
   const [offset, setOffset] = useState(0);
 
   const strokeWidth = 8;
-  const radius = 50;
+  const radius = 25;
   const circumference = 2 * Math.PI * radius;
 
   useEffect(() => {
