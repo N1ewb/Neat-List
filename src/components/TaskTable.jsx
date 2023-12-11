@@ -5,13 +5,11 @@ import { useDB } from '../context/dbContext';
 
 import './TaskTable.css'
 
-const TaskTable = ({ taskslist, currentLayout, CompletedIcon, PendingIcon,EditIcon }) => {
+const TaskTable = ({ taskslist, currentLayout, isDarkmode,CompletedIcon, PendingIcon, OverdueIcon,EditIcon,EditIconBlue,DeleteIcon,CheckIcon }) => {
     const auth = useAuth()
     const db = useDB()
     const [editableCell, setEditableCell] = useState(null);
     const [tasksList, setTaskLists] = useState([])
-    const [loading, setLoading] = useState(true);
-    const [initialState, setInitialState] = useState(false)
 
     const handleEditTableTd = (index) => {
         setEditableCell(index); 
@@ -63,28 +61,15 @@ const TaskTable = ({ taskslist, currentLayout, CompletedIcon, PendingIcon,EditIc
       };
       
       useEffect(() => {
-        if (taskslist && taskslist.length > 0) {
-          setLoading(false); 
-        }
-      }, [taskslist]);
-      
-      useEffect(() => {
         const getTaskList = async () => {
           try {
             if(currentLayout === 'table'){
                 setTaskLists(taskslist);
-              if(!initialState){
-                const unsubscribe = db.subscribeToTasksChanges((updatedTasks) => {
-                    setTaskLists(updatedTasks);
-                    setInitialState(true)
-                });
-                return () => unsubscribe();
-              } else {
                 const unsubscribe = db.subscribeToTasksChanges((updatedTasks) => {
                     setTaskLists(taskslist);
                 });
                 return () => unsubscribe();
-              }
+              
             }
           } catch (error) {
             db.notifyError(error); 
@@ -95,18 +80,20 @@ const TaskTable = ({ taskslist, currentLayout, CompletedIcon, PendingIcon,EditIc
        
   return (
     <>
-        <div className='task-table'>
+        <div className={isDarkmode? 'task-table-dark':'task-table'}>
         <div className="card-container">
             {tasksList ? (
                 tasksList.map((task, index) =>
                 task.user === auth.currentUser.uid ? (
-                    <div key={task.id} className="card">
+                    <div key={task.id} className={isDarkmode?'card-dark':'card'}>
 
                     <div className="card-item status">
-                        {task.status === false ? (
+                        {task.status === 'pending' ? (
                             <img src={PendingIcon} alt='pending' height='20px'/>
-                        ) : (
+                        ) : task.status === 'completed' ? (
                             <img src={CompletedIcon} alt='Completed' height='20px'/>
+                        ) : (
+                            <img src={OverdueIcon} alt='overdue' height='20px'/>
                         )}
                     </div>
 
@@ -127,7 +114,6 @@ const TaskTable = ({ taskslist, currentLayout, CompletedIcon, PendingIcon,EditIc
                                 onBlur={(e) => {
                                     const newValue = e.target.value;
                                     saveEditedCellValue(task.id, 'name',newValue);
-                                    handleEditTableTd(null); 
                                 }}
                             />
                         ) : (
@@ -135,7 +121,7 @@ const TaskTable = ({ taskslist, currentLayout, CompletedIcon, PendingIcon,EditIc
                         )}
                     </div>
                     
-                    <div className='card-item category'>Category: 
+                    <div className={isDarkmode? 'card-item category-dark':'card-item category'}><p style={{ display: editableCell === index ? 'none' : 'flex' }}>Category:</p>
                     {editableCell === index ? (
                         <select className="category" type='text' value={task.category}
                             onChange={(e) => {
@@ -150,16 +136,14 @@ const TaskTable = ({ taskslist, currentLayout, CompletedIcon, PendingIcon,EditIc
                             onBlur={(e) => {
                                 const newCategoryValue = e.target.value;
                                 saveEditedCellValue(task.id, 'category', newCategoryValue);
-                                handleEditTableTd(null); 
                             }}
                         >
-                            <option value=""></option>
                             <option value="work">Work</option>
                             <option value="personal">Personal</option>
                             <option value="study">Study</option>
                         </select>
                     ) : (
-                        " " + task.category
+                        task.category
                     )}
                     </div>
 
@@ -178,32 +162,30 @@ const TaskTable = ({ taskslist, currentLayout, CompletedIcon, PendingIcon,EditIc
                             onBlur={(e) => {
                                 const newPriorityValue = e.target.value;
                                 saveEditedCellValue(task.id, 'priority', newPriorityValue);
-                                handleEditTableTd(null); 
                             }}
                         >
-                            <option value=""></option>
                             <option type='number' value="1">Low</option>
                             <option type='number' value="2">High</option>
                             <option type='number' value="3">Critical</option>
                         </select>
                         ):
-                        getPriorityString(task.priority)}
+                        task.status !== 'overdue'? getPriorityString(task.priority) : <p style={{color:'red'}}>Overdue</p>}
                     </div>
 
                     <div className='card-item-user-action'>
                     <div className='card-item mark-complete'>
-                        {editableCell === index? <button onClick={()=>handleMarkTaskComplete(task.id)}>Check</button>: <div></div>}
+                        {editableCell === index? <button onClick={()=>handleMarkTaskComplete(task.id)}><img src={CheckIcon} alt='check' height='27px'/></button>: <div></div>}
                     </div>
                     <div className='card-item delete-button'>
-                        {editableCell === index? <button onClick={()=>handleDeleteTask(task.id)}>Delete</button>: <div></div>}
+                        {editableCell === index || task.status === 'overdue'? <button onClick={()=>handleDeleteTask(task.id)}><img src={DeleteIcon} alt='Delete' height='23px'/></button>: <div></div>}
                     </div>
-                    <div className="card-item edit-button">
-                        {task.status ? <div></div> : (
+                    <div className={isDarkmode ? "card-item edit-button-dark": "card-item edit-button"}>
+                        {task.status !== 'pending' ? <div></div> : (
                             (
                                 editableCell === index ? (
-                                    <button onClick={() => {setEditableCell(null); handleEditTableTd(null);}}>Save</button>
+                                    <button onClick={() => {setEditableCell(null); handleEditTableTd(null);}}><p>Save</p></button>
                                 ) : (
-                                    <button onClick={() => setEditableCell(index)}><img src={EditIcon} alt='edit-icon' height='30px'/></button>
+                                    <button onClick={() => setEditableCell(index)}><img src={isDarkmode? EditIconBlue: EditIcon} alt='edit-icon' height='30px'/></button>
                                 )
                             )
                         )}

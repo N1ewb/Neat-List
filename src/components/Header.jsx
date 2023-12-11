@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './Header.css'
-
+import NeatlistLogo from '../images/neatlist-transparent.png'
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -67,7 +67,7 @@ const Header = () => {
                     <div className='unauth-nav-bar'>
                         <Link to="/" style={{textDecoration: 'none'}}>
                             <div className='logo-wrapper'> 
-                                <p>Neat <span>List</span></p>
+                                <img src={NeatlistLogo} alt='neatlist' width='150px' />
                             </div>
                         </Link>
                         <div className='auth-nav-links'>

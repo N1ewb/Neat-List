@@ -4,7 +4,7 @@ import { useDB } from '../context/dbContext';
 
 import './TaskCards.css'
 
-const TaskCards = ({taskslist,currentLayout, PendingIcon, CompletedIcon}) => {
+const TaskCards = ({taskslist,currentLayout, isDarkmode,PendingIcon, CompletedIcon}) => {
     const auth = useAuth();
     const db = useDB()
     const [tasksList, setTaskLists] = useState([])
@@ -42,18 +42,10 @@ const TaskCards = ({taskslist,currentLayout, PendingIcon, CompletedIcon}) => {
           try {
             if(currentLayout === 'cards'){
                 setTaskLists(taskslist);
-              if(!initialState){
-                const unsubscribe = db.subscribeToTasksChanges((updatedTasks) => {
-                    setTaskLists(updatedTasks);
-                    setInitialState(true)
-                });
-                return () => unsubscribe();
-              } else {
                 const unsubscribe = db.subscribeToTasksChanges((updatedTasks) => {
                     setTaskLists(taskslist);
                 });
                 return () => unsubscribe();
-              }
             }
           } catch (error) {
             db.notifyError(error); 
@@ -64,7 +56,7 @@ const TaskCards = ({taskslist,currentLayout, PendingIcon, CompletedIcon}) => {
 
   return (
     <>
-        <div className="task-cards-container">
+        <div className={isDarkmode? 'task-cards-container-dark':'task-cards-container'}>
         {tasksList? tasksList.map((task, index) =>
             task.user === auth.currentUser.uid ? (
             <div key={task.id} className="task-card">

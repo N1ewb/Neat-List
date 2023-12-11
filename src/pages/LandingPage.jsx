@@ -11,6 +11,8 @@ import UserFriendlyImg from '../images/user-friendly.png'
 import NotifImg from '../images/reminder-sky-background_118813-968.jpg'
 import SearchImg from '../images/two-tiny-characters-examining-big-cloud_74855-14190.png'
 import Organized from '../images/pexels-photo-4360353.jpeg'
+import NeatlistLogo from '../images/neatlist-transparent.png'
+
 
 import './LandingPage.css'
 import '../App.css'
@@ -57,7 +59,7 @@ const LandingPage = ({value}) => {
             <section className='first-section' style={{backgroundImage:`url(${LoginBG})`}}>
                 <div className='landing-content landing-left'>
                     <div className='landing-logo-wrapper'> 
-                        <p>Neat <span>List</span></p>
+                        <img src={NeatlistLogo} alt='neatlist' width='400px' />
                     </div>
                     <div className='brief-intro'>
                         <p>Your go-to task manager for streamlined productivity, offering intuitive features to organize tasks and boost efficiency effortlessly, empowering you to stay focused and achieve more.</p>
@@ -85,7 +87,7 @@ const LandingPage = ({value}) => {
             <section id="third-section" className='third-section'>
                 <div className='neatlist-features-container'>
                     <div className='landing-title-container'>
-                        <div className='landing-title'><h1>Neat List Features</h1></div>
+                        <div className='landing-title'><h1>Neat List</h1></div>
                     </div>
 
                     <div className='feature-card-container'>
@@ -98,7 +100,7 @@ const LandingPage = ({value}) => {
                                 <h3>Task Organization</h3>
                             </div>
                             <div className='feature-body'>
-                                <p> Neat List simplifies task management by letting users sort tasks by project, priority, or deadline using drag-and-drop features and customizable labels. This allows for an organized view of tasks based on individual preferences.</p>
+                                <p> Neat List simplifies task management by letting users sort tasks by project, priority, or category and customizable labels. This allows for an organized view of tasks based on individual preferences.</p>
                             </div>
                         </div>
 

@@ -1,5 +1,5 @@
 import React, { useContext, createContext } from 'react';
-import { addDoc, collection, deleteDoc, getDocs,onSnapshot,doc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, getDocs,onSnapshot,doc, updateDoc,getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import toast, { Toaster } from 'react-hot-toast';
 import { useAuth } from './AuthContext';
@@ -16,25 +16,27 @@ export const DBProvider = ({ children }) => {
     const addSuccess = () => toast('Task Added');
     const notifyError = (error) => toast(error.message);
 
-    const AddTask = async (name, category, priority, deadline, Timestamp, status, userID) => {
+    const AddTask = async (name, category, priority, deadlineDate, deadlineTime,Timestamp, status, userID) => {
         try {
-            await addDoc(tasksCollectionRef, { name, category, priority, deadline, Timestamp, status,user: userID });
+            await addDoc(tasksCollectionRef, { name, category, priority, deadlineDate, deadlineTime,Timestamp, status,user: userID });
             addSuccess();
         } catch (error) {
             return notifyError(error)
         }
     };
 
-        const getUserTask = async (uid) => {
+        const getUserTask = async () => {
         try {
-          const tasksSnapshot = await getDocs(tasksCollectionRef);
-          const tasks = tasksSnapshot.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-          }));
-          
-          const userTasks = tasks.filter((task) => task.user === uid);
-          return userTasks;
+          if (auth.currentUser){
+            const tasksSnapshot = await getDocs(tasksCollectionRef);
+            const tasks = tasksSnapshot.docs.map((doc) => ({
+              ...doc.data(),
+              id: doc.id,
+            }));
+
+            const userTasks = tasks.filter((task) => task.user === auth.currentUser.uid);
+            return userTasks;
+          }
         } catch (error) {
           return notifyError(error);
         }
@@ -49,10 +51,37 @@ export const DBProvider = ({ children }) => {
         }
       }
 
+      const markTaskOverdue = async (id) => {
+        try {
+          const tasksCollectionRef = collection(db, "Tasks");
+          const emptyCollectionSnapshot = await getDocs(tasksCollectionRef);
+      
+          if (emptyCollectionSnapshot.empty) {
+            return { message: "No tasks found in database" };
+          }
+          const taskDocRef = doc(db, "Tasks", id);
+          const taskSnapshot = await getDoc(taskDocRef);
+          
+          if (!taskSnapshot.exists()) {
+            return { message: "Task not found" };
+          }
+          const { status } = taskSnapshot.data();
+          if (status === "overdue") {
+            return { message: "Task is already overdue" };
+          }
+          await updateDoc(taskDocRef, {
+            status: "overdue",
+          });
+          
+        } catch (error) {
+          return notifyError(error);
+        }
+      };
+
       const markTaskComplete = async (id) => {
         try{
-            const taskDocRef = doc(db, 'Tasks', id)
-            const updatedDataRef = { status: true };
+            const taskDocRef = doc(db, 'Tasks', id )
+            const updatedDataRef = { status: 'completed' };
             return await updateDoc(taskDocRef,updatedDataRef)
         }catch (error){
             return notifyError(error)
@@ -89,7 +118,8 @@ export const DBProvider = ({ children }) => {
         subscribeToTasksChanges,
         notifyError,
         editTableTd,
-        getUserTask
+        getUserTask,
+        markTaskOverdue
     };
 
     return (

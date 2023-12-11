@@ -2,48 +2,60 @@ import React, { useRef } from 'react'
 import { useDB } from '../context/dbContext'
 import { useAuth } from '../context/AuthContext'
 import { Timestamp } from 'firebase/firestore'
+import toast, { Toaster } from 'react-hot-toast'
+
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+
 import './TaskForm.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 const TaskForm = ({show, handleClose}) => {
     const db = useDB()
     const auth = useAuth()
+    const notifyError = (error) => toast(error)
     const taskNameRef = useRef()
     const categoryRef = useRef()
     const priorityRef = useRef()
-    const deadlineRef = useRef()
-    
-    const handleAddTask = () => {
+    const deadlineDateRef = useRef()
+    const deadlineTimeRef = useRef()
+    const oneDayInMilliseconds = 1000 * 60 * 60 * 24;
+
+    const handleAddTask = async () => {
         const taskName = taskNameRef.current.value;
         const category = categoryRef.current.value;
         const priority = priorityRef.current.value;
-        const deadline = deadlineRef.current.value;
-
-        if (taskName && category && priority && deadline) {
+        const dDate = deadlineDateRef.current.value;
+        const dTime = deadlineTimeRef.current.value;
+        
+        if (taskName && category && priority && dDate && dTime) {
             const today = new Date(); 
-            const deadlineDate = new Date(deadline); 
-            if (deadlineDate > today) {
-                db.AddTask(
+            const oneDayInMilliseconds = 1000 * 60 * 60 * 24;
+            const yesterday = new Date(today.getTime() - oneDayInMilliseconds)
+            const deadlineDate = new Date(dDate); 
+            if (deadlineDate > yesterday) {
+                await db.AddTask(
                     taskName,
                     category,
                     priority,
-                    deadline,
+                    deadlineDate,
+                    dTime,
                     Timestamp.now(),
-                    false,
+                    'pending',
                     auth.currentUser.uid
                 );
             } else {
-                db.notifyError('Deadline should be ahead of current date')
+                notifyError('Deadline should be ahead of current date')
             }
         } else {
-            db.notifyError('Please fill in the fields')
+            notifyError('Please fill in the fields')
         }
     };
     
 
   return (
     <>
+    <Toaster />
     <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
             <Modal.Title>Add Task</Modal.Title>
@@ -65,8 +77,10 @@ const TaskForm = ({show, handleClose}) => {
                         <option type='number' value="2">High</option>
                         <option type='number' value="3">Critical</option>
                     </select>
-                    <label htmlFor="deadline">Set Deadline:</label>
-                <input type="date" id="deadline" name="deadline" ref={deadlineRef}></input>
+                    <label htmlFor="deadline">Set Deadline Date:</label>
+                    <input type="date" id="deadline" name="deadline" ref={deadlineDateRef}></input>
+                    <label htmlFor="appt">Select Deadline time:</label>
+                    <input type="time" id="appt" name="appt" ref={deadlineTimeRef}></input>
                 </div>
             </Modal.Body>
             <Modal.Footer>
