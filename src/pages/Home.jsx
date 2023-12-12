@@ -11,6 +11,7 @@ import NotificationBlueIcon from '../images/icons8-notification-96(-xxxhdpi).png
 import NotificationWhiteIcon from '../images/icons8-notification-white-96.png'
 import NotificationBlackIcon from '../images/icons8-notification-96.png'
 import UserIcon from '../images/icons8-user-40.png'
+import NeatlistLogo from '../images/Neatlist small.png'
 
 const Home = () => {
   const auth = useAuth()
@@ -168,12 +169,17 @@ const Home = () => {
               {auth.currentUser ? '' : 'Not logged in'}
               <div className={'dashboard-heading'}>
                 <div className={isDarkmode? 'dashboard-navbar-dark': 'dashboard-navbar'}>
-                  <input name='search' onChange={(e)=>setSearch(e.target.value)} placeholder='Search'/>
+                  <div className='logo-wrapper'>
+                    < img src={NeatlistLogo} alt='neatlist' width='100%' />
+                  </div>
                   <div className='dashboard-spacer'></div>
-                  <img className={isDarkmode?'notfication-img-dark':'notfication-img'} src={isDarkmode?NotificationBlueIcon:NotificationWhiteIcon} alt='notification' height='40px' />
-                  <div className='user-profile'>
-                    <img src={auth.currentUser && auth.currentUser.photoURL?auth.currentUser.photoURL:UserIcon} alt='user-icon' height='50px' />
-                    <h6>{auth.currentUser? auth.currentUser.displayName: 'Unknown'}</h6>
+                  <input name='search' onChange={(e)=>setSearch(e.target.value)} placeholder='Search'/>
+                  <div className='user-info'>
+                    <img className={isDarkmode?'notfication-img-dark':'notfication-img'} src={isDarkmode?NotificationBlueIcon:NotificationWhiteIcon} alt='notification' height='40px' />
+                    <div className='user-profile'>
+                      <img src={auth.currentUser && auth.currentUser.photoURL?auth.currentUser.photoURL:UserIcon} alt='user-icon' height='50px' />
+                      <h6>{auth.currentUser? auth.currentUser.displayName: 'Unknown'}</h6>
+                    </div>
                   </div>
                 </div>
                 <div className='dashboard-intro'>

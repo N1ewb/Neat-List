@@ -25,107 +25,108 @@ export const DBProvider = ({ children }) => {
         }
     };
 
-        const getUserTask = async () => {
-        try {
-          if (auth.currentUser){
-            const tasksSnapshot = await getDocs(tasksCollectionRef);
-            const tasks = tasksSnapshot.docs.map((doc) => ({
+    const getUserTask = async () => {
+    try {
+      if (auth.currentUser){
+        const tasksSnapshot = await getDocs(tasksCollectionRef);
+        const tasks = tasksSnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+
+        const userTasks = tasks.filter((task) => task.user === auth.currentUser.uid);
+        return userTasks;
+      }
+    } catch (error) {
+      return notifyError(error);
+    }
+  };
+      
+  const deleteTask = async (id) => {
+    try{
+        const taskDoc = doc(db,'Tasks', id)
+        return await deleteDoc(taskDoc)
+    }catch(error){
+        return notifyError(error)
+    }
+  }
+
+  const markTaskOverdue = async (id) => {
+    try {
+      const tasksCollectionRef = collection(db, "Tasks");
+      const emptyCollectionSnapshot = await getDocs(tasksCollectionRef);
+  
+      if (emptyCollectionSnapshot.empty) {
+        return { message: "No tasks found in database" };
+      }
+      const taskDocRef = doc(db, "Tasks", id);
+      const taskSnapshot = await getDoc(taskDocRef);
+      
+      if (!taskSnapshot.exists()) {
+        return { message: "Task not found" };
+      }
+      const { status } = taskSnapshot.data();
+      if (status === "overdue") {
+        return { message: "Task is already overdue" };
+      }
+      await updateDoc(taskDocRef, {
+        status: "overdue",
+      });
+      
+    } catch (error) {
+      return notifyError(error);
+    }
+  };
+
+  const markTaskComplete = async (id) => {
+    try{
+        const taskDocRef = doc(db, 'Tasks', id )
+        const updatedDataRef = { status: 'completed' };
+        return await updateDoc(taskDocRef,updatedDataRef)
+    }catch (error){
+        return notifyError(error)
+    }
+  }
+
+  const editTableTd = async (id, cell, value) => {
+    try {
+        const taskDocRef = doc(db, 'Tasks', id)
+        const updatedDataRef = {[cell] : value}
+        return  await updateDoc(taskDocRef, updatedDataRef);
+    }catch(error){
+        return notifyError(error)
+    }
+  }
+
+  const subscribeToTasksChanges = (callback) => {
+    if(auth.currentUser){
+        const unsubscribe = onSnapshot(tasksCollectionRef, (snapshot) => {
+            const updatedTasks = snapshot.docs.map((doc) => ({
               ...doc.data(),
               id: doc.id,
             }));
+            const updatedUserTask = updatedTasks.filter((task) => task.user === auth.currentUser.uid);
+            callback(updatedUserTask);
+          }, auth.currentUser.uid);
+          return unsubscribe;
+    }
+  };
 
-            const userTasks = tasks.filter((task) => task.user === auth.currentUser.uid);
-            return userTasks;
-          }
-        } catch (error) {
-          return notifyError(error);
-        }
-      };
-      
-      const deleteTask = async (id) => {
-        try{
-            const taskDoc = doc(db,'Tasks', id)
-            return await deleteDoc(taskDoc)
-        }catch(error){
-            return notifyError(error)
-        }
-      }
+  const value = {
+      AddTask,
+      deleteTask,
+      markTaskComplete,
+      subscribeToTasksChanges,
+      notifyError,
+      editTableTd,
+      getUserTask,
+      markTaskOverdue
+  };
 
-      const markTaskOverdue = async (id) => {
-        try {
-          const tasksCollectionRef = collection(db, "Tasks");
-          const emptyCollectionSnapshot = await getDocs(tasksCollectionRef);
-      
-          if (emptyCollectionSnapshot.empty) {
-            return { message: "No tasks found in database" };
-          }
-          const taskDocRef = doc(db, "Tasks", id);
-          const taskSnapshot = await getDoc(taskDocRef);
-          
-          if (!taskSnapshot.exists()) {
-            return { message: "Task not found" };
-          }
-          const { status } = taskSnapshot.data();
-          if (status === "overdue") {
-            return { message: "Task is already overdue" };
-          }
-          await updateDoc(taskDocRef, {
-            status: "overdue",
-          });
-          
-        } catch (error) {
-          return notifyError(error);
-        }
-      };
-
-      const markTaskComplete = async (id) => {
-        try{
-            const taskDocRef = doc(db, 'Tasks', id )
-            const updatedDataRef = { status: 'completed' };
-            return await updateDoc(taskDocRef,updatedDataRef)
-        }catch (error){
-            return notifyError(error)
-        }
-      }
-
-      const editTableTd = async (id, cell, value) => {
-        try {
-            const taskDocRef = doc(db, 'Tasks', id)
-            const updatedDataRef = {[cell] : value}
-            return  await updateDoc(taskDocRef, updatedDataRef);
-        }catch(error){
-            return notifyError(error)
-        }
-      }
-
-      const subscribeToTasksChanges = (callback) => {
-        if(auth.currentUser){
-            const unsubscribe = onSnapshot(tasksCollectionRef, (snapshot) => {
-                const updatedTasks = snapshot.docs.map((doc) => ({
-                  ...doc.data(),
-                  id: doc.id,
-                }));
-                const updatedUserTask = updatedTasks.filter((task) => task.user === auth.currentUser.uid);
-                callback(updatedUserTask);
-              }, auth.currentUser.uid);
-              return unsubscribe;
-        }
-      };
-    const value = {
-        AddTask,
-        deleteTask,
-        markTaskComplete,
-        subscribeToTasksChanges,
-        notifyError,
-        editTableTd,
-        getUserTask,
-        markTaskOverdue
-    };
-
-    return (
-        <dbContext.Provider value={value}>
-            {children}
-            <Toaster />
-        </dbContext.Provider>
-    );
+  return (
+      <dbContext.Provider value={value}>
+          {children}
+          <Toaster />
+      </dbContext.Provider>
+  );
 };

@@ -44,6 +44,7 @@ const TaskList = ({search, isDarkmode}) => {
     const [filteredTasks, setFilteredTasks] = useState([]);
     const [temp, setTemp] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    const [overdueTasks, setOverdueTasks] = useState([]);
 
     const toggleDropdown = () => {
       setIsOpen(!isOpen);
@@ -124,13 +125,12 @@ const TaskList = ({search, isDarkmode}) => {
     }
 
     const handleMarkTaskOverdue = async () => {
-      if(taskslist.length !== 0){
+      if (taskslist.length !== 0) {
         const currentTime = new Date().getTime();
         const today = new Date();
-      
-        const overdueTasks = taskslist.filter((task) => {
+    
+        const filteredOverdueTasks = taskslist.filter((task) => {
           const [deadlineHours, deadlineMinutes] = task.deadlineTime.split(':').map(Number);
-      
           const deadlineDateTime = new Date(
             today.getFullYear(),
             today.getMonth(),
@@ -138,24 +138,31 @@ const TaskList = ({search, isDarkmode}) => {
             deadlineHours,
             deadlineMinutes
           ).getTime();
-            
-          return !task.completed && task.deadlineDate <= today && deadlineDateTime <= currentTime;
+    
+          return task.status === 'pending' && task.deadlineDate <= today && deadlineDateTime <= currentTime;
         });
-      
+    
+        setOverdueTasks(filteredOverdueTasks);
+    
         try {
-          await Promise.all(overdueTasks.map((task) => db.markTaskOverdue(task.id)));
-
+          await Promise.all(filteredOverdueTasks.map((task) => db.markTaskOverdue(task.id)));
+          if(overdueTasks.length !== 0){
+            
+            setOverdueTasks([]); 
+          }
+          
+           
         } catch (error) {
-        db.notifyError(error)
+          db.notifyError(error);
         }
       }
     };
     
     useEffect(() => {
-      if(taskslist.length !== 0){
+      if(taskslist.length !== 0 && overdueTasks.length !== 0){
         handleMarkTaskOverdue();
       }
-    }, [taskslist]);
+    }, [taskslist,overdueTasks]);
 
     useEffect(() => {
         const fetchData = async () => {

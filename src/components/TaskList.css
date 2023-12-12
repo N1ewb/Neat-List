@@ -1,8 +1,7 @@
 .tasklist-container{
     display: flex;
     flex-direction: column;
-    max-height: 380px;
-    height: 380px;
+    max-height: 320px;
     width: 100%;
     font-family: 'Genos', sans-serif;
     
@@ -98,4 +97,17 @@ margin-right: 5px;
     vertical-align: middle;
     padding: 10px;
     
+}
+
+/*Mobile Mode*/
+@media screen and (width: 485px) {
+    .tasklist-container{
+        display: flex;
+        flex-direction: column;
+        max-height: 100%;
+        height: auto;
+        width: 100%;
+        font-family: 'Genos', sans-serif;
+        
+    }
 }
