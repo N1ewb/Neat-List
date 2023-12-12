@@ -177,7 +177,7 @@ width: 200px;
     display: none;
 }
 /*Mobile Mode*/
-@media screen and (max-width: 485px) {
+@media screen and (max-width: 720px) {
     .dashboard-container-dark{
         display: flex;
         flex-wrap: wrap;
