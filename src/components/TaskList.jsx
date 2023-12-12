@@ -23,6 +23,10 @@ import CheckIcon from '../images/icons8-check-48.png'
 import MenuIcon from '../images/icons8-menu-48.png'
 import ArhiveIcon from '../images/icons8-archive-48.png'
 import DeletedIcon from '../images/icons8-deleted-48.png'
+import SchoolIcon from '../images/icons8-school-64.png'
+import PersonalIcon from '../images/icons8-person-80.png'
+import WorkIcon from '../images/icons8-permanent-job-80.png'
+import SaveIcon from '../images/icons8-save-50.png'
 
 import TaskForm from './TaskForm'
 import TaskTable from './TaskTable';
@@ -252,6 +256,10 @@ const TaskList = ({search, isDarkmode}) => {
                 EditIconBlue={EditIconBlue}
                 DeleteIcon={DeleteIcon}
                 CheckIcon={CheckIcon}
+                SchoolIcon={SchoolIcon}
+                PersonalIcon={PersonalIcon}
+                WorkIcon={WorkIcon}
+                SaveIcon={SaveIcon}
             />
             ) : (
             <TaskCards
@@ -266,6 +274,10 @@ const TaskList = ({search, isDarkmode}) => {
                 EditIconBlue={EditIconBlue}
                 DeleteIcon={DeleteIcon}
                 CheckIcon={CheckIcon}
+                SchoolIcon={SchoolIcon}
+                PersonalIcon={PersonalIcon}
+                WorkIcon={WorkIcon}
+                SaveIcon={SaveIcon}
             />
             )}
 

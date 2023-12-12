@@ -100,7 +100,7 @@ margin-right: 5px;
 }
 
 /*Mobile Mode*/
-@media screen and (width: 485px) {
+@media screen and (max-width: 485px) {
     .tasklist-container{
         display: flex;
         flex-direction: column;
@@ -113,7 +113,7 @@ margin-right: 5px;
 }
 
 /*Iphone Se*/
-@media screen and (max-width: 381px ) {
+@media screen and (max-width: 485px ) {
     .tasklist{
         display: flex;
         justify-content: flex-start;
@@ -140,8 +140,8 @@ margin-right: 5px;
     .user-action {
         width: 65%;
         display: flex;
-        justify-content: space-between;
-        gap: 5px;
+        justify-content: flex-end;
+        gap: 2%;
     }
     .sort-category select {
         padding: 0px 8px 0px 12px;

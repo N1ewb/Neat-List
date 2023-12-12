@@ -5,7 +5,7 @@ import { useDB } from '../context/dbContext';
 
 import './TaskTable.css'
 
-const TaskTable = ({ taskslist, currentLayout, isDarkmode,CompletedIcon, PendingIcon, OverdueIcon,EditIcon,EditIconBlue,DeleteIcon,CheckIcon }) => {
+const TaskTable = ({ taskslist, currentLayout, isDarkmode,CompletedIcon, PendingIcon, OverdueIcon,EditIcon,EditIconBlue,DeleteIcon,CheckIcon,SchoolIcon,PersonalIcon,WorkIcon,SaveIcon }) => {
     const auth = useAuth()
     const db = useDB()
     const [editableCell, setEditableCell] = useState(null);
@@ -42,16 +42,19 @@ const TaskTable = ({ taskslist, currentLayout, isDarkmode,CompletedIcon, Pending
         }
     };
 
-    const getStatus = (status) => {
-        switch(status) {
-            case true:
-                return 'Completed';
-            case false:
-                return 'Not Completed';
+    const getCategoryImg = (category) => {
+        switch (category) {
+            case 'school':
+                return SchoolIcon;
+            case 'personal':
+                return PersonalIcon;
+            case 'work':
+                return WorkIcon;
             default:
                 return ''
         }
     }
+
     const getFormattedDate = (timestamp) => {
         const milliseconds = timestamp * 1000;
         const dateObject = new Date(milliseconds);
@@ -88,7 +91,8 @@ const TaskTable = ({ taskslist, currentLayout, isDarkmode,CompletedIcon, Pending
                     <div key={task.id} className={isDarkmode?'card-dark':'card'}>
 
                     <div className="card-item status">
-                        {task.status === 'pending' ? (
+                    {editableCell === index? <button onClick={()=>handleMarkTaskComplete(task.id)}><img src={CheckIcon} alt='check' height='27px'/></button>: 
+                        task.status === 'pending' ? (
                             <img src={PendingIcon} alt='pending' height='20px'/>
                         ) : task.status === 'completed' ? (
                             <img src={CompletedIcon} alt='Completed' height='20px'/>
@@ -121,33 +125,34 @@ const TaskTable = ({ taskslist, currentLayout, isDarkmode,CompletedIcon, Pending
                         )}
                     </div>
                     
-                    <div className={isDarkmode? 'card-item category-dark':'card-item category'}><p style={{ display: editableCell === index ? 'none' : 'flex' }}>Category:</p>
-                    {editableCell === index ? (
-                        <select className="category" type='text' value={task.category}
-                            onChange={(e) => {
-                                e.preventDefault();
-                                const newCategoryValue = e.target.value;
-                                setTaskLists((prevTasks) =>
-                                    prevTasks.map((t, i) =>
-                                        i === index ? { ...t, category: newCategoryValue } : t
-                                    )
-                                );
-                            }}
-                            onBlur={(e) => {
-                                const newCategoryValue = e.target.value;
-                                saveEditedCellValue(task.id, 'category', newCategoryValue);
-                            }}
-                        >
-                            <option value="work">Work</option>
-                            <option value="personal">Personal</option>
-                            <option value="study">Study</option>
-                        </select>
-                    ) : (
-                        task.category
-                    )}
+                    <div className={isDarkmode? 'card-item category-dark':'card-item category'}>
+                        
+                        {editableCell === index ? (
+                            <select className="category" type='text' value={task.category}
+                                onChange={(e) => {
+                                    e.preventDefault();
+                                    const newCategoryValue = e.target.value;
+                                    setTaskLists((prevTasks) =>
+                                        prevTasks.map((t, i) =>
+                                            i === index ? { ...t, category: newCategoryValue } : t
+                                        )
+                                    );
+                                }}
+                                onBlur={(e) => {
+                                    const newCategoryValue = e.target.value;
+                                    saveEditedCellValue(task.id, 'category', newCategoryValue);
+                                }}
+                            >
+                                <option value="work">Work</option>
+                                <option value="personal">Personal</option>
+                                <option value="study">Study</option>
+                            </select>
+                        ) : (
+                            <img src={getCategoryImg(task.category)} alt={task.category} height='25px' />
+                        )}
                     </div>
 
-                    <div className='card-item' style={{ color: task.priority === '1' ? '#58d332' : task.priority === '2' ? '#E2BE00' : task.priority === '3' ? '#9D0000' : 'green' }} >
+                    <div className='card-item priority' style={{ color: task.priority === '1' ? '#58d332' : task.priority === '2' ? '#E2BE00' : task.priority === '3' ? '#9D0000' : 'green' }} >
                         {editableCell === index? (
                         <select className="priority-lvl" type='number' value={task.priority}
                             onChange={(e) => {
@@ -169,21 +174,19 @@ const TaskTable = ({ taskslist, currentLayout, isDarkmode,CompletedIcon, Pending
                             <option type='number' value="3">Critical</option>
                         </select>
                         ):
-                        task.status !== 'overdue'? getPriorityString(task.priority) : <p style={{color:'red'}}>Overdue</p>}
+                        <div className='priority'>{task.status !== 'overdue'? <p>{getPriorityString(task.priority)}</p> : <p style={{color:'red'}}>Overdue</p> }<span style={{ backgroundColor: task.status !== 'overdue' ? (task.priority === '1' ? '#58d332' : task.priority === '2' ? '#E2BE00' : task.priority === '3' ? '#9D0000' : 'green') : 'red' }}></span>                        </div>
+                        }
                     </div>
 
                     <div className='card-item-user-action'>
-                    <div className='card-item mark-complete'>
-                        {editableCell === index? <button onClick={()=>handleMarkTaskComplete(task.id)}><img src={CheckIcon} alt='check' height='27px'/></button>: <div></div>}
-                    </div>
-                    <div className='card-item delete-button'>
+                    <div className='action-button delete-button'>
                         {editableCell === index || task.status === 'overdue'? <button onClick={()=>handleDeleteTask(task.id)}><img src={DeleteIcon} alt='Delete' height='23px'/></button>: <div></div>}
                     </div>
-                    <div className={isDarkmode ? "card-item edit-button-dark": "card-item edit-button"}>
+                    <div className={isDarkmode ? "action-button edit-button-dark": "action-button edit-button"}>
                         {task.status !== 'pending' ? <div></div> : (
                             (
                                 editableCell === index ? (
-                                    <button onClick={() => {setEditableCell(null); handleEditTableTd(null);}}><p>Save</p></button>
+                                    <button onClick={() => {setEditableCell(null); handleEditTableTd(null);}}><img src={SaveIcon} alt='save' height='20px'/></button>
                                 ) : (
                                     <button onClick={() => setEditableCell(index)}><img src={isDarkmode? EditIconBlue: EditIcon} alt='edit-icon' height='30px'/></button>
                                 )

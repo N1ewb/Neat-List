@@ -186,91 +186,9 @@ width: 200px;
     display: none;
 }
 /*Mobile Mode*/
-@media screen and (max-width: 485px) {
-    .dashboard-container-dark{
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .dashboard-container{
-        display: flex;
-        flex-wrap: wrap;
-        height: 100vh;
-    }
-    .dashboard{
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .dashboard-heading{
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .dashboard-navbar-dark{
-        display: flex;
-        flex-wrap: wrap;
-    }
-    .dashboard-navbar{
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        width: 100%;
-        padding: 10px;
-        gap: 10px;
-        align-items: center;
-    }
-    .dashboard-spacer{
-        width: 15%;
-    }
-    .dashboard-navbar input {
-        padding: 8px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-right: 10px;
-        width: 130px;
-        height: 30px;
-    }
-    .user-info{
-        display: flex;
-        justify-content: space-around;
-        gap: 10px;
-        width: 30%;
-        align-items: center;
-    }
-    
-    .user-profile{
-        display: flex;
-        width: 100%;
-        gap: 10px;
-    }
-    .user-profile img{
-        height: 40px;
-    }
-    .user-profile h6{
-        display: none;
-    }
-    .notfication-img-dark{
-        height: 30px;
-    }
-    .notfication-img{
-        height: 30px;
-    }
-    .logo-wrapper {
-        display: flex;
-        width: 15%;
-    }
-    .dashboard-intro{
-        width: 100%;
-    }
-    .dashboard-graph-container{
-        width: 100%;
-    }
-    .dashboard-graph{
-        width: 100%;
-    }
-}
 
 /*Iphone Se*/
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 480px) {
     .tasklist{
         display: flex;
         justify-content: flex-start;
