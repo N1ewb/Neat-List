@@ -141,7 +141,7 @@ margin-right: 5px;
         width: 65%;
         display: flex;
         justify-content: flex-end;
-        gap: 2%;
+        gap: 4%;
     }
     .sort-category select {
         padding: 0px 8px 0px 12px;

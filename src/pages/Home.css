@@ -21,15 +21,20 @@ align-items: center;
 max-width: 100%;
 }
 .dashboard-navbar{
-display: flex;
-justify-content: space-between;
-vertical-align: middle;
-align-items: center;
-width: 100%;
-padding: 10px;
-border: 1px solid #00A9FF;
-background-color: #89CFF3;
-border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    vertical-align: middle;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #00A9FF;
+    background-color: #89CFF3;
+    border-radius: 10px;
+}
+.user-info{
+    display: flex;
+    width: 30%;
+    justify-content: space-around;
 }
 .dashboard-heading {
 display: flex;
@@ -38,14 +43,12 @@ flex-wrap: wrap;
 .intro-spacer{
 width: 3%;
 }
-.dashboard-spacer{
-width: 30%;
-}
+
 .user-profile{
 display: flex;
 justify-content: space-around;
 align-items: center;
-width: 20%;
+width: 70%;
 
 }
 .user-profile img{
@@ -182,9 +185,41 @@ width: 200px;
     display: flex;
     padding: 20px;
 }
+
+.pending {
+    width: 48%;
+    
+}
+.pending h3{
+    height: 30%;
+}
+.completed{
+    width: 48%;
+}
+.completed h3{
+    height: 30%;
+}
+.tasks-number{
+    height: 50%;
+}
+.tasks-number h3 {
+    font-size:23px;
+}
+.tasks-number p{
+    margin: 0;
+}
+.completion-rate{
+    display: flex;
+    flex-direction: column;
+}
+.task-pending-status{
+    display: flex;
+}
 .logo-wrapper{
     display: none;
+
 }
+
 /*Mobile Mode*/
 
 /*Iphone Se*/
@@ -266,6 +301,9 @@ width: 200px;
         display: flex;
         width: 15%;
     }
+    .logo-wrapper img:hover{
+        transform: scale(1.1);
+    }
     .dashboard-intro{
         width: 100%;
     }
@@ -278,4 +316,54 @@ width: 200px;
     .completion-bar h5 span {
         display: none;
     }
+    .tasks-number {
+        display: flex;
+        gap: 5px;
+        flex-direction: row;
+    }
+    .tasks-number h5{
+        font-size: 18px;
+    }
+    .tasks-number h5 span {
+        font-size: 13px;
+    }
+    .tasks-number h3{
+        font-size: 18px;
+    }
+    .tasks-number p{
+        font-size: 13px;
+    }
+    .dropdown-content{
+        top: 60px;
+        background-color: #CDF5FD;
+        border-radius: 20px;
+        outline: 1px solid #00A9FF;
+        z-index: 999;
+        padding: 10px;
+        transition: 200ms ease-in-out;
+        display: flex;
+        flex-direction: column;
+        width: 250px;
+    }
+    .dropdown-content-dark{
+        top: 60px;
+        background-color: #23252b;
+        border-radius: 20px;
+        outline: 1px solid #00A9FF;
+        z-index: 999;
+        padding: 10px;
+        transition: 200ms ease-in-out;
+        display: flex;
+        flex-direction: column;
+    }
+    .user-actions{
+        width: 100%;
+    }
+    .theme{
+        width: 200px;
+    }
+    .theme p{
+        width: 200px;
+    }
+    
 }

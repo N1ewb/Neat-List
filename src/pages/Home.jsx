@@ -1,6 +1,6 @@
 import React,{useEffect, useState,useCallback} from 'react'
 import { AuthProvider, useAuth } from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { DBProvider,useDB } from '../context/dbContext'
 
 import './Home.css'
@@ -12,6 +12,10 @@ import NotificationWhiteIcon from '../images/icons8-notification-white-96.png'
 import NotificationBlackIcon from '../images/icons8-notification-96.png'
 import UserIcon from '../images/icons8-user-40.png'
 import NeatlistLogo from '../images/Neatlist small.png'
+import LogoutIcon from '../images/icons8-logout-50.png'
+import DarkmodeIcon from '../images/icons8-dark-mode-48.png'
+import LightmodeIcon from '../images/icons8-light-mode-78.png'
+
 
 const Home = () => {
   const auth = useAuth()
@@ -29,9 +33,19 @@ const Home = () => {
   const [completedWorkTasks, setCompletedWorkTask] = useState([])
   const [pending, setPending] = useState([])
   const [complete, setComplete] = useState([])
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
 
   const changeTheme = () => {
     setDarkMode(!isDarkmode)
+  }
+
+  const handleSignout = async () => {
+    await auth.SignOut()
+    navigate('/')
   }
 
   const handleGetTasks = useCallback (async (uid) => {
@@ -169,10 +183,44 @@ const Home = () => {
               {auth.currentUser ? '' : 'Not logged in'}
               <div className={'dashboard-heading'}>
                 <div className={isDarkmode? 'dashboard-navbar-dark': 'dashboard-navbar'}>
+
                   <div className='logo-wrapper'>
-                    < img src={NeatlistLogo} alt='neatlist' width='100%' />
+                    <img src={NeatlistLogo} alt='neatlist' width='100%' onClick={toggleDropdown}/>
+                    {showDropdown && (
+                     <div
+                     className={`dropdown-content ${showDropdown ? 'show' : ''} ${
+                       isDarkmode ? 'dropdown-content-dark' : ''
+                     }`}
+                     onClick={toggleDropdown}
+                   >  
+                      <div className={isDarkmode?'sidebar-links-dark':'sidebar-links'}>
+                        <p style={{height:'30px'}}> <Link to='/' style={{textDecoration: 'none',color: isDarkmode ? 'white' : 'black', height:'30px'}}>Home</Link></p>
+                        <p style={{height:'30px'}}> <Link to='/' style={{textDecoration: 'none',color: isDarkmode ? 'white' : 'black', height:'30px'}}>Features</Link></p>
+                        <p style={{height:'30px'}}> <Link to='/' style={{textDecoration: 'none',color: isDarkmode ? 'white' : 'black', height:'30px'}}>About</Link></p>
+                      </div>
+                        <div className='user-actions'>
+                          <div className='settings' onClick={() => changeTheme()}>
+                              {isDarkmode?
+                              <div className='theme'>
+                                  <img src={DarkmodeIcon} alt='settings' height='23px' width='23px' />
+                                  <p>Dark Mode</p>
+                              </div>:
+                              <div className='theme'>
+                                  <img src={LightmodeIcon} alt='settings' height='30px' width='30px' />
+                                  <p style={{color:isDarkmode?'white':'black'}}>Light Mode</p>
+                              </div>
+                              }
+                          </div>
+                          <div className='logout' onClick={()=>handleSignout()}>
+                              <img src={LogoutIcon} alt='logout' height='20px' width='20px'/>
+                              <p style={{color:'#CF4B00'}}>Logout</p>
+                          </div>
+                      </div>
+                      </div>
+                    )}
                   </div>
-                  <div className='dashboard-spacer'></div>
+
+
                   <input name='search' onChange={(e)=>setSearch(e.target.value)} placeholder='Search'/>
                   <div className='user-info'>
                     <img className={isDarkmode?'notfication-img-dark':'notfication-img'} src={isDarkmode?NotificationBlueIcon:NotificationWhiteIcon} alt='notification' height='40px' />
@@ -198,16 +246,20 @@ const Home = () => {
                       <h5>Work Tasks: {taskList.length !== 0 && workTasks ? workTasks.length : 0}</h5>
                     </div>
                         <div className='tasks-number' >
-                          <div className='bar completion-bar' style={{ width: `${(taskList.length !== 0 && pending ?complete.length / taskList.length : 0) * 100}%` }}></div>
-                        <h5 style={{width:'100%'}}>Completion Rate: <span className="progress-text">{taskList.length !== 0?(complete.length / taskList.length) * 100: 0}%</span></h5>
-                        <div className='pending'>
-                          <h3>{pending.length} Tasks</h3>
-                          <p>Pending</p>
-                        </div>
-                        <div className='completed'>
-                          <h3>{complete.length} Tasks</h3>  
-                          <p>Completed</p>
-                        </div>
+                          <div className='completion-rate'>
+                            <div className='bar completion-bar' style={{ width: `${(taskList.length !== 0 && pending ?complete.length / taskList.length : 0) * 100}%` }}></div>
+                            <h5 style={{width:'100%'}}>Completion Rate: <span className="progress-text">{taskList.length !== 0?(complete.length / taskList.length) * 100: 0}%</span></h5>
+                          <div className='task-pending-status'>
+                            <div className='pending'>
+                              <h3>{pending.length} Tasks</h3>
+                              <p>Pending</p>
+                            </div>
+                            <div className='completed'>
+                              <h3>{complete.length} Tasks</h3>  
+                              <p>Completed</p>
+                            </div>
+                          </div>
+                          </div>
                       </div>
                       </div>
                   </div>
