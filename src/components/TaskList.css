@@ -111,3 +111,44 @@ margin-right: 5px;
         
     }
 }
+
+/*Iphone Se*/
+@media screen and (width: 375px) {
+    .tasklist{
+        display: flex;
+        justify-content: flex-start;
+    }
+    .tasklist-container{
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        width: 100%;
+        font-family: 'Genos', sans-serif;
+    }
+    .tasklist-header{
+        max-width: 100%;
+        display: flex;
+        justify-content: flex-start;
+    }
+    .tasklist-header img{
+        height: 20px;
+        width: 20px;
+    }
+    .sort-buttons button img{
+        height: 20px;
+    }
+    .user-action {
+        width: 65%;
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+    }
+    .sort-category select {
+        padding: 0px 8px 0px 12px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        height: 28px;
+        width: 80px;
+    }
+}

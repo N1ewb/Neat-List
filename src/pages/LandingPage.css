@@ -193,3 +193,28 @@
         padding: 20px;
     }
 }
+
+/*Iphone SE*/
+@media screen and (max-width: 375px) {
+    .landing-logo-wrapper img{
+        width: 350px;
+    }
+    .feature-card-container{
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        width: 80%;
+    }
+    .feature-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: justify;
+        width: 100%;
+    }
+    .feature-img{
+        width: 100%;
+    }
+}

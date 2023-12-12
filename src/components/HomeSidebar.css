@@ -138,7 +138,7 @@
     background-color: #303f50;
 }
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 485px) {
     .sidebar-container{
         display: none;
     }

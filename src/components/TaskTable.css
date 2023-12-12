@@ -159,3 +159,11 @@
     max-height: auto;
   }
 }
+
+/*Iphone SE*/
+@media screen and (width: 375px) {
+  .task-table{
+    
+  }
+
+}
