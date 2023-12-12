@@ -197,7 +197,7 @@
 /*Iphone SE*/
 @media screen and (max-width: 375px) {
     .landing-logo-wrapper img{
-        width: 350px;
+        width: 330px;
     }
     .feature-card-container{
         display: flex;
@@ -217,4 +217,5 @@
     .feature-img{
         width: 100%;
     }
+    
 }

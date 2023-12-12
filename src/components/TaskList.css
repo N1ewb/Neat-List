@@ -113,7 +113,7 @@ margin-right: 5px;
 }
 
 /*Iphone Se*/
-@media screen and (width: 375px) {
+@media screen and (max-width: 381px ) {
     .tasklist{
         display: flex;
         justify-content: flex-start;
