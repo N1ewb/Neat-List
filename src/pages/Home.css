@@ -310,9 +310,6 @@ width: 200px;
         display: flex;
         width: 15%;
     }
-    .logo-wrapper img:hover{
-        transform: scale(1.1);
-    }
     .dashboard-intro{
         width: 100%;
     }
@@ -343,7 +340,7 @@ width: 200px;
         font-size: 13px;
     }
     .dropdown-content{
-        top: 30px;
+        top: 50px;
         background-color: #CDF5FD;
         border-radius: 20px;
         outline: 1px solid #00A9FF;
@@ -355,7 +352,7 @@ width: 200px;
         width: 250px;
     }
     .dropdown-content-dark{
-        top: 30px;
+        top: 50px;
         background-color: #23252b;
         border-radius: 20px;
         outline: 1px solid #00A9FF;
