@@ -80,4 +80,16 @@
         width: 100%;
         justify-content: space-evenly;
     }
+    .header-dropdown-menu{
+        display: block;
+    }
+    .auth-nav-links{
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        top: 70px;
+        left: 230px;
+        background-color: rgb(0, 0, 0);
+        width: 200px;
+    }
 }
