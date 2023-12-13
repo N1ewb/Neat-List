@@ -38,7 +38,7 @@ const LoginPage = () => {
         {auth.currentUser ?<Header /> : <UnauthHeader/>}
         <div className='login-container' style={{backgroundColor:"#545763"}}>
             <div className='login'style={{backgroundImage:`url(${LoginBG})`}}>
-                <div className='content left' style={{backgroundImage:`url(${black})`}}>
+                <div className='content-login left' style={{backgroundImage:`url(${black})`}}>
                     <div className='spacer'></div>
                     <div className='login-form-container'>
                         <div className='loing-form-container-heading'>
@@ -57,8 +57,8 @@ const LoginPage = () => {
                                     
                                     <button type='submit' onClick={()=> handleSignIn()} className='login-button'>Login</button>
                                     
-                                <div className='with-google' onClick={()=> handleSignInWithGoogle()}>
-                                <p><img src={GoogleIcon} alt="Google Icon"  height="20px" /> Sign in with Google</p>
+                                <div className='login-with-google' onClick={()=> handleSignInWithGoogle()}>
+                                <p><img src={GoogleIcon} alt="Google Icon"  height="20px" /> <span>Sign in with Google</span></p>
                                 </div>
                             </div>
                         </div>

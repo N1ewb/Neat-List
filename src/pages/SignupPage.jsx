@@ -49,9 +49,9 @@ const SignupPage = () => {
     {auth.currentUser ?<Header /> : <UnauthHeader/>}
         <div className='signup-container' style={{backgroundColor:"#545763"}}>
             <div className='sign-up' style={{backgroundImage:`url(${LoginBG})`}}>
-                <div className='content left' style={{backgroundImage:`url(${black})`}}>
+                <div className='content-signup left' style={{backgroundImage:`url(${black})`}}>
                     <div className='spacer'></div>
-                    <div className='login-form-container'>
+                    <div className='signin-form-container'>
                         <div className='signin-form-container-heading'>
                             <div className='signin-form-container-heading-wrapper'>
                                 <p>Start for Free</p>

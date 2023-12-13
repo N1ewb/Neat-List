@@ -20,85 +20,7 @@
 .left{
     width: 50%;
 }
-@media screen and (max-width: 720px) {
-    .sign-up{
-        display: flex;
-        flex-direction: column;
-        background-position: bottom;
-    }
-    .left{
-        width: 80%;
-    }
-    .right{
-        width: 20%;
-    }
-    .signin-form input{
-        height: 50%;
-    }
-}
-@media screen and (max-width: 485px) {
-    .sign-up{
-        display: flex;
-        flex-direction: column;
-        background-position: bottom;
-    }
-    .left{
-        width: 100%;
-    }
-    .right{
-        width: 0px;
-    }
-    .signin-form input[type='text'],
-    .signin-form input[type='email'],
-    .signin-form input[type='password'] {
-        height: 35px;
-    }
-    .sign-in-buttons button{
-        height: 35px;
-    }
-    .with-google{
-        height: 35px;
-        display: flex;
-        gap:1px;
-        align-items: center;
-        padding: 1.5px;
-    }
-    .with-google span{
-        font-size: 12px;
-    }
-    .with-google p img{
-        background-color: white;
-        border-radius: 2px;
-        width: 15px;
-        height: 15px;
-    }
-    .signin-form-container-heading{
-        width: 100%;
-        display: flex;
-        justify-content: center;
 
-    }
-    .signin-form-container-heading-wrapper{
-        width: 50%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        gap: 10px;
-        font-size: 70%;
-    }
-    .signin-form-container-heading-wrapper p span{
-        background-color: #000320;
-        text-decoration: dashed;
-        color: white;
-        padding: 3px;
-        border-radius: 8px;
-    }
-    .content {
-        display: flex;
-        flex-direction: column;
-        gap: 60px; 
-    }
-}
 .fullname {
     display: flex;
     width: 100%;
@@ -115,7 +37,7 @@
     font-family: 'Genos', sans-serif;
     background-color: #353641;
     color: white;
-    height: 50px;
+    height: 40px;
     width: 100%;
     border-radius: 15px;
     border: none;
@@ -172,7 +94,7 @@
 }
 .signin-form i{
     position: relative;
-    top: 10%;
+    top: 27px;
     left:41%;
 }
 .fullname input[name='First-Name'] {
@@ -180,7 +102,7 @@
   }
 .fullname i{
     position: relative;
-    top: 33%;
+    top: 12px;
     left:37%;
     height: 0px;
     width: 0px;
@@ -196,10 +118,119 @@
     flex-direction: column;
     gap: 20px;
 }
+.signin-form-container-heading-wrapper h1{
+    width: 150%;
+}
 .signin-form-container-heading-wrapper p span{
     background-color: #000320;
     text-decoration: dashed;
     color: white;
     padding: 3px;
     border-radius: 8px;
+}
+.signin-form-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align:left;
+    gap: 10px;
+    font-family: 'Genos', sans-serif;
+    width: 100%;
+}
+.with-google{
+    height: 50px;
+}
+
+@media screen and (max-width: 960px) {
+        
+}
+@media screen and (max-width: 720px) {
+    .sign-up{
+        display: flex;
+        flex-direction: column;
+        background-position: bottom;
+    }
+    
+    .left{
+        width: 80%;
+    }
+    .right{
+        width: 20%;
+    }
+    .signin-form input{
+        height: 50%;
+    }
+}
+@media screen and (max-width: 485px) {
+    .left{
+        width: 100%;
+    }
+    .right{
+        width: 0px;
+    }
+    .signin-form{
+        width: 80%;
+    }
+    .signin-form input[type='text'],
+    .signin-form input[type='email'],
+    .signin-form input[type='password'] {
+        height: 35px;
+    }
+    .sign-in-buttons button{
+        height: 35px;
+    }
+    .with-google{
+        height: 35px;
+        display: flex;
+        gap:1px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        vertical-align: middle;
+        padding: 1.5px;
+    }
+    .with-google p{
+        margin: 0;
+    }
+    .with-google span{
+        font-size: 12px;
+        margin-left: 5px;
+    }
+    .with-google p img{
+        background-color: white;
+        border-radius: 2px;
+        width: 15px;
+        height: 15px;
+    }
+    .signin-form-container-heading{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+    }
+    .signin-form-container-heading{
+        height: 40%;
+    }
+    .signin-form-container-heading-wrapper{
+        width: 75%;
+        display: flex;
+        flex-direction: column;
+        font-size: 70%;
+    }
+    .signin-form-container-heading-wrapper h1{
+        width: 100%;
+    }
+    .signin-form-container-heading-wrapper p span{
+        background-color: #000320;
+        text-decoration: dashed;
+        color: white;
+        padding: 3px;
+        border-radius: 8px;
+    }
+    .content-signup {
+        display: flex;
+        flex-direction: column;
+        gap: 90px;
+    }
 }
