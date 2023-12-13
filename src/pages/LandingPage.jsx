@@ -16,6 +16,7 @@ import NeatlistLogo from '../images/neatlist-transparent.png'
 
 import './LandingPage.css'
 import '../App.css'
+import Footer from '../components/Footer'
 
 
 const LandingPage = ({value}) => {
@@ -56,7 +57,7 @@ const LandingPage = ({value}) => {
         <AuthProvider>
         {auth.currentUser ?<Header /> : <UnauthHeader/>}
         <div className='landingpage-container' style={{backgroundColor:"#545763"}}>
-            <section className='first-section' style={{backgroundImage:`url(${LoginBG})`}}>
+            <section id='first-section' className='first-section' style={{backgroundImage:`url(${LoginBG})`}}>
                 <div className='landing-content landing-left'>
                     <div className='landing-logo-wrapper'> 
                         <img src={NeatlistLogo} alt='neatlist' width='400px' />
@@ -87,7 +88,7 @@ const LandingPage = ({value}) => {
             <section id="third-section" className='third-section'>
                 <div className='neatlist-features-container'>
                     <div className='landing-title-container'>
-                        <div className='landing-title'><h1>Neat List</h1></div>
+                        <div className='landing-title'><h1>Neat List Features</h1></div>
                     </div>
 
                     <div className='feature-card-container'>
@@ -148,7 +149,7 @@ const LandingPage = ({value}) => {
                 <div className='about-neat-list-container'>
                     <div className='landing-title-container'>
                         <div className='landing-title'>
-                            <h1>Neat List</h1>
+                            <h1>About Neat List</h1>
                         </div>
                     </div>
                     <div className='about-neat-list'>
@@ -163,6 +164,9 @@ const LandingPage = ({value}) => {
                         </div>
                     </div>
                 </div>
+            </section>
+            <section className='footer-section'>
+                <Footer />
             </section>
         </div>
         </AuthProvider>
