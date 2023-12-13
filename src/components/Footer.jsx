@@ -1,15 +1,17 @@
-import React from 'react'
-import { Link,useNavigate } from 'react-router-dom'
+import React,{useState,useEffect} from 'react'
+import { Link } from 'react-router-dom'
 
 import TriaIcon from '../images/tria (2).png'
 import FacebookIcon from '../images/icons8-facebook-48.png'
 import TwitterIcon from '../images/icons8-twitterx-48.png'
-
-
 import './Footer.css'
 
-const Footer = () => {
-  const navigate = useNavigate()
+
+
+
+
+const Footer = ({t}) => {
+  
 
   return (
     <>
@@ -17,19 +19,19 @@ const Footer = () => {
 
             <div className='footer-navigation'>
               <div className='footer-titles'>
-                <h2>Navigation</h2>
+                <h2>{t('navigation')}</h2>
               </div>
               <div className='footer-nav-links'>
-                <a href='#first-section'>  Landing Page</a>
-                <a href='' > <Link to='Dashboard'>Dashboard</Link> </a>
-                <a href='#third-section' > Features</a>
-                <a href='#fourth-section' > About</a>
+                <a href='#first-section'>{t('landing_page')}</a>
+                <p > <Link to='Dashboard'>{t('dashboard')}</Link> </p>
+                <a href='#third-section' >{t('features')}</a>
+                <a href='#fourth-section' >{t('about_link')}</a>
               </div>
             </div>
 
             <div className='contact-us'>
               <div className='footer-titles'>
-                <h2>Contact Us</h2>
+                <h2>{t('contact_us')}</h2>
               </div>
               <div className='social-medias'>
                 <a href='https://www.facebook.com/profile.php?id=61551731377409' ><img src={TriaIcon} alt='Tria Web Design' width='18px' /> <span>Tria Web Design</span></a>
@@ -40,16 +42,17 @@ const Footer = () => {
 
             <div className='Account'>
               <div className='footer-titles'>
-                <h2>Account</h2>
+                <h2>{t('account')}</h2>
               </div>
               <div className='account-links'>
-                <p> <Link to='SignupPage'>Create Account</Link> </p>
-                <p> <Link to='LoginPage' >Login</Link></p>
+                <p> <Link to='SignupPage'>{t('create-account')}</Link> </p>
+                <p> <Link to='LoginPage' >{t('login')}</Link></p>
               </div>
             </div>
             <div className='copyright-statement'>
-              <p>©Copyright NeatList 2023, All Rights Reserved</p>
+              <p>{t("copyright")}</p>
             </div>
+            
         </div>
     </>
   )

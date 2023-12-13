@@ -12,7 +12,7 @@ import Header from '../components/Header'
 
 import './LoginPage.css'
 
-const LoginPage = () => {
+const LoginPage = ({t, languages}) => {
     const auth = useAuth()
     const emailRef = useRef()
     const passwordRef = useRef()
@@ -34,8 +34,8 @@ const LoginPage = () => {
 
   return (
     <>
-    <AuthProvider>
-        {auth.currentUser ?<Header /> : <UnauthHeader/>}
+    <AuthProvider> 
+        {auth.currentUser ?<Header t={t} languages={languages} /> : <UnauthHeader t={t} languages={languages}/>}
         <div className='login-container' style={{backgroundColor:"#545763"}}>
             <div className='login'style={{backgroundImage:`url(${LoginBG})`}}>
                 <div className='content-login left' style={{backgroundImage:`url(${black})`}}>
@@ -43,22 +43,22 @@ const LoginPage = () => {
                     <div className='login-form-container'>
                         <div className='loing-form-container-heading'>
                             <div className='loing-form-container-heading-wrapper'>
-                                <p>Start your Journey</p>
-                                <h1>Login to your Account</h1>
-                                <p>Dont have an Account? <Link to={'/SignupPage'} style={{textDecoration: 'none'}}><span>Sign Up</span></Link></p>
+                                <p>{t('start_your_journey')}</p>
+                                <h1>{t('login_to_your_account')}</h1>
+                                <p>{t('dont_have_account')} <Link to={'/SignupPage'} style={{textDecoration: 'none'}}><span>{t('signup')}</span></Link></p>
                             </div>
                         </div>
                         <div className="login-form">
                             <i className="fa fa-envelope" aria-hidden="true"></i>
-                            <input ref={emailRef} type='email' name="email" placeholder='Email'/>
+                            <input ref={emailRef} type='email' name="email" placeholder={t('email')}/>
                             <i className="fa fa-lock" aria-hidden="true"></i>
-                            <input ref={passwordRef} type='password' name="password" placeholder='Password'/>
+                            <input ref={passwordRef} type='password' name="password" placeholder={t('password')}/>
                             <div className='login-buttons'>
                                     
-                                    <button type='submit' onClick={()=> handleSignIn()} className='login-button'>Login</button>
+                                    <button type='submit' onClick={()=> handleSignIn()} className='login-button'>{t('login')}</button>
                                     
                                 <div className='login-with-google' onClick={()=> handleSignInWithGoogle()}>
-                                <p><img src={GoogleIcon} alt="Google Icon"  height="20px" /> <span>Sign in with Google</span></p>
+                                <p><img src={GoogleIcon} alt="Google Icon"  height="20px" /> <span>{t('sign-in-with-google')}</span></p>
                                 </div>
                             </div>
                         </div>

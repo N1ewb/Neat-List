@@ -20,6 +20,13 @@
     color: white;
     text-decoration: underline;
 }
+.footer-nav-links p{
+    margin: 0;
+}
+.footer-nav-links p:hover{
+    color: white;
+    text-decoration: underline;
+}
 .social-medias{
     display: flex;
     flex-direction: column;

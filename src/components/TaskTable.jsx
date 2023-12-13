@@ -61,7 +61,7 @@ const TaskTable = ({
 
     const getCategoryImg = (category) => {
         switch (category) {
-            case 'school':
+            case 'study':
                 return SchoolIcon;
             case 'personal':
                 return PersonalIcon;
@@ -215,7 +215,7 @@ const TaskTable = ({
                     </div>
                 ) : null
                 )
-            ) : null}
+            ) : <div>Loading</div>}
             </div>
 
         </div>

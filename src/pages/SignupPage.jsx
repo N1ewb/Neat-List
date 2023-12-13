@@ -11,7 +11,7 @@ import Header from '../components/Header'
 
 import './SignupPage.css' 
 
-const SignupPage = () => {
+const SignupPage = ({t, languages}) => {
     const firstNameRef = useRef()
     const lastNameRef = useRef()
     const emailRef = useRef()
@@ -46,7 +46,7 @@ const SignupPage = () => {
   return (
     <>
     <AuthProvider>
-    {auth.currentUser ?<Header /> : <UnauthHeader/>}
+    {auth.currentUser ?<Header t={t} languages={languages} /> : <UnauthHeader t={t} languages={languages}/>}
         <div className='signup-container' style={{backgroundColor:"#545763"}}>
             <div className='sign-up' style={{backgroundImage:`url(${LoginBG})`}}>
                 <div className='content-signup left' style={{backgroundImage:`url(${black})`}}>
@@ -54,28 +54,28 @@ const SignupPage = () => {
                     <div className='signin-form-container'>
                         <div className='signin-form-container-heading'>
                             <div className='signin-form-container-heading-wrapper'>
-                                <p>Start for Free</p>
-                                <h1>Create New Account</h1>
-                                <p>Already have an Account? <Link to={'/LoginPage'} style={{textDecoration: 'none'}}><span>Login</span></Link></p>
+                                <p>{t('start_for_free')}</p>
+                                <h1>{t('create_new_account')}</h1>
+                                <p>{t('already_have_account')} <Link to={'/LoginPage'} style={{textDecoration: 'none'}}><span>{t('login')}</span></Link></p>
                             </div>
                         </div>
                         <div className="signin-form">
                             <div className='fullname'>
                                 <i className="fa fa-address-card-o" aria-hidden="true"></i>
-                                <input ref={firstNameRef}  name="First-Name" type='text' placeholder='First Name'/>
+                                <input ref={firstNameRef}  name="First-Name" type='text' placeholder={t('first_name')}/>
                                 <i className="fa fa-address-card-o" aria-hidden="true"></i>
-                                <input ref={lastNameRef} name='Last-Name' type='text' placeholder='Last Name'/>
+                                <input ref={lastNameRef} name='Last-Name' type='text' placeholder={t('last_name')}/>
                             </div>
                             <i className="fa fa-envelope" aria-hidden="true"></i>
-                            <input ref={emailRef} type='email' name="email" placeholder='Email'/>
+                            <input ref={emailRef} type='email' name="email" placeholder={t('email')}/>
                             <i className="fa fa-lock" aria-hidden="true"></i>
-                            <input ref={passwordRef} type='password' name="password" placeholder='Password'/>
+                            <input ref={passwordRef} type='password' name="password" placeholder={t('password')}/>
                             <i className="fa fa-lock" aria-hidden="true"></i>
-                            <input  ref={passwordConfirmRef} type='password' name="confirm-password" placeholder='Confirm Password'/>
+                            <input  ref={passwordConfirmRef} type='password' name="confirm-password" placeholder={t('confirm_password')}/>
                             <div className='sign-in-buttons'>
-                                    <button type='submit' className='singin-button' onClick={() => handleSignUp()} >Sign Up</button>
+                                    <button type='submit' className='singin-button' onClick={() => handleSignUp()} >{t('signup')}</button>
                                 <div className='with-google' onClick={()=>handleSignInWithGoogle()}>
-                                <p><img src={GoogleIcon} alt="Google Icon"  height="20px" /> <span>Sign up with Google</span></p>
+                                <p><img src={GoogleIcon} alt="Google Icon"  height="20px" /> <span>{t('sign-in-with-google')}</span></p>
                                 </div>
                             </div>
                         </div>

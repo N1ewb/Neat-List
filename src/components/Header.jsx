@@ -6,10 +6,20 @@ import './Header.css'
 import NeatlistLogo from '../images/neatlist-transparent.png'
 import MenuIcon from '../images/icons8-menu-white-50.png'
 
-const Header = () => {
+const Header = ({t, languages}) => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const [lang, setLang] = useState("en");
+
+  const handleChange = (e) => {
+    e.preventDefault()
+    setLang(e.target.value);
+    let loc = "http://localhost:3000";
+    window.location.replace(
+        loc + "?lng=" + e.target.value
+    );
+  };
 
   const handleClick = (e, sectionId) => {
     if (location.pathname !== '/') {
@@ -72,14 +82,25 @@ const Header = () => {
                     </Link>
                     <div className="auth-nav-links-always-open">
                       
-                         <Link to="/Dashboard" style={{borderBottom:'1px solid white'}}>Dashboard</Link>
+                         <Link to="/Dashboard" style={{borderBottom:'1px solid white'}}>{t('dashboard')}</Link>
                         <a  href="#third-section" onClick={(e) => handleClick(e, "third-section")}>
-                          Features
+                          {t('features')}
                         </a>
                         <a href="#fourth-section" onClick={(e) => handleClick(e, "fourth-section")}>
-                          About
+                          {t('about_link')}
                         </a>
-                       
+                        <select value={lang} onChange={handleChange}>
+                          {languages.map((item) => {
+                              return (
+                                  <option
+                                      key={item.value}
+                                      value={item.value}
+                                  >
+                                      {item.text}
+                                  </option>
+                              );
+                          })}
+                      </select>
                       </div>
                     <div
                       className="header-dropdown-menu"
@@ -97,7 +118,18 @@ const Header = () => {
                         <a href="#fourth-section" onClick={(e) => handleClick(e, "fourth-section")}>
                           About
                         </a>
-                       
+                        <select value={lang} onChange={handleChange}>
+                          {languages.map((item) => {
+                              return (
+                                  <option
+                                      key={item.value}
+                                      value={item.value}
+                                  >
+                                      {item.text}
+                                  </option>
+                              );
+                          })}
+                      </select>
                       </div>
                     )}
                   </div>

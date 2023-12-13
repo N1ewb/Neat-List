@@ -19,43 +19,12 @@ import '../App.css'
 import Footer from '../components/Footer'
 
 
-const LandingPage = ({value}) => {
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const LandingPage = ({languages, t}) => {
     const auth = useAuth()
-    useEffect(() => {
-        const dataAlreadyLoaded = localStorage.getItem('dataLoaded');
-
-        if (!dataAlreadyLoaded) {
-          async function fetchData() {
-            try {
-              console.log('hello');
-              await new Promise(resolve => setTimeout(resolve, 500));
-              setLoading(false);
-              localStorage.setItem('dataLoaded', 'true');
-            } catch (error) {
-              setError(error.message);
-              setLoading(false);
-            }
-          }
-    
-          fetchData();
-        } else {
-          setLoading(false);
-        }
-    }, []); 
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
   return (
     <>
         <AuthProvider>
-        {auth.currentUser ?<Header /> : <UnauthHeader/>}
+        {auth.currentUser ?<Header languages={languages} t={t}/> : <UnauthHeader languages={languages} t={t}/>}
         <div className='landingpage-container' style={{backgroundColor:"#545763"}}>
             <section id='first-section' className='first-section' style={{backgroundImage:`url(${LoginBG})`}}>
                 <div className='landing-content landing-left'>
@@ -63,15 +32,15 @@ const LandingPage = ({value}) => {
                         <img src={NeatlistLogo} alt='neatlist' width='400px' />
                     </div>
                     <div className='brief-intro'>
-                        <p>Your go-to task manager for streamlined productivity, offering intuitive features to organize tasks and boost efficiency effortlessly, empowering you to stay focused and achieve more.</p>
+                        <p>{t('brief_intro')}</p>
                     </div>
                     {auth.currentUser ?
                         <Link to={'/dashboard'}>
-                            <button className='get-started'>Get Started</button>
+                            <button className='get-started'>{t('get_started')}</button>
                         </Link>
                     : 
                     <Link to={'/LoginPage'}>
-                        <button className='get-started'>Get Started</button>
+                        <button className='get-started'>{t('get_started')}</button>
                     </Link>
                     }
                     
@@ -82,13 +51,13 @@ const LandingPage = ({value}) => {
             </section>
             <section id="second-section" className='second-section'>
                 <div className='motto'>
-                    <p>Your streamlined task manager for effortless productivity and organized living.</p>
+                    <p>{t('motto')}</p>
                 </div>
             </section>
             <section id="third-section" className='third-section'>
                 <div className='neatlist-features-container'>
                     <div className='landing-title-container'>
-                        <div className='landing-title'><h1>Neat List Features</h1></div>
+                        <div className='landing-title'><h1>{t('features_title')}</h1></div>
                     </div>
 
                     <div className='feature-card-container'>
@@ -98,10 +67,10 @@ const LandingPage = ({value}) => {
                                 <img  src={TaskImg} alt="task"/>
                             </div>
                             <div className='feature-title'>
-                                <h3>Task Organization</h3>
+                                <h3>{t('task_organization')}</h3>
                             </div>
                             <div className='feature-body'>
-                                <p> Neat List simplifies task management by letting users sort tasks by project, priority, or category and customizable labels. This allows for an organized view of tasks based on individual preferences.</p>
+                                <p>{t('f_feature_body')}</p>
                             </div>
                         </div>
 
@@ -110,10 +79,10 @@ const LandingPage = ({value}) => {
                                 <img src={UserFriendlyImg} alt="user friendly"/>
                             </div>
                             <div className='feature-title'>
-                                <h3>User-Friendly Interface</h3>
+                                <h3>{t('user_interface')}</h3>
                             </div>
                             <div className='feature-body'>
-                                <p>With its intuitive design and user interface, Neat List offers a hassle-free and enjoyable task management experience. Its user-centric approach ensures ease of use and quick adaptation, empowering users to navigate the platform effortlessly.</p>
+                                <p>{t('s_feature_body')}</p>
                             </div>
                         </div>
 
@@ -122,10 +91,10 @@ const LandingPage = ({value}) => {
                                 <img src={NotifImg} alt="reminder"/>
                             </div>
                             <div className='feature-title'>
-                                <h3>Reminders and Notifications</h3>
+                                <h3>{t('reminders')}</h3>
                             </div>
                             <div className='feature-body'>
-                                <p>Keep productivity on track with personalized reminders and notifications tailored to impending deadlines or crucial tasks. Neat List ensures users stay informed and punctual, whether through email alerts or in-app notifications, minimizing the chances of missing important milestones.</p>
+                                <p>{t('t_feature_body')}</p>
                             </div>
                         </div>
 
@@ -134,10 +103,10 @@ const LandingPage = ({value}) => {
                                 <img src={SearchImg} alt="searching" />
                             </div>
                             <div className='feature-title'>
-                                <h3>Smart Filters and Search</h3>
+                                <h3>{t('smart_filters')}</h3>
                             </div>
                             <div className='feature-body'>
-                            Efficiently locate specific tasks or lists through smart filtering options and a robust search function. Neat List enables users to find and focus on particular tasks swiftly, minimizing time spent searching and maximizing productivity.
+                            {t('fo_feature_body')}
                             </div>
                         </div>
 
@@ -149,7 +118,7 @@ const LandingPage = ({value}) => {
                 <div className='about-neat-list-container'>
                     <div className='landing-title-container'>
                         <div className='landing-title'>
-                            <h1>About Neat List</h1>
+                            <h1>{t('feature_title2')}</h1>
                         </div>
                     </div>
                     <div className='about-neat-list'>
@@ -160,13 +129,13 @@ const LandingPage = ({value}) => {
                             <div className='about-logo-wrapper'> 
                                 <p>Neat<span>List</span></p>
                             </div>
-                            <p>Neat List is a robust task management platform designed to streamline organization and enhance productivity. It offers intuitive features for effortless task categorization, collaboration, and deadline management. With customizable views and seamless integrations, Neat List empowers users to stay organized and focused, simplifying daily workflows for individuals and teams alike.</p>
+                            <p>{t('about')}</p>
                         </div>
                     </div>
                 </div>
             </section>
             <section className='footer-section'>
-                <Footer />
+                <Footer t={t}/>
             </section>
         </div>
         </AuthProvider>

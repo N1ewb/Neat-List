@@ -132,7 +132,7 @@ const TaskList = ({search, isDarkmode}) => {
       if (taskslist.length !== 0) {
         const currentTime = new Date().getTime();
         const today = new Date();
-    
+        const seconds = Math.floor(today.getTime() / 1000);
         const filteredOverdueTasks = taskslist.filter((task) => {
           const [deadlineHours, deadlineMinutes] = task.deadlineTime.split(':').map(Number);
           const deadlineDateTime = new Date(
@@ -142,8 +142,7 @@ const TaskList = ({search, isDarkmode}) => {
             deadlineHours,
             deadlineMinutes
           ).getTime();
-    
-          return task.status === 'pending' && task.deadlineDate <= today && deadlineDateTime <= currentTime;
+          return task.deadlineDate.seconds < seconds && deadlineDateTime <= currentTime && task.status === 'pending';
         });
     
         setOverdueTasks(filteredOverdueTasks);

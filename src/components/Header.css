@@ -26,6 +26,32 @@
 .header-dropdown-menu{
     display: none;
 }
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    outline: none;
+    padding: 8px 12px;
+    font-size: 16px;
+    color: #333; 
+    border-radius: 4px;
+    border: 1px solid #ddd; 
+    cursor: pointer;
+}
+select:hover{
+    background-color: #008DBA;
+    color: white;
+}
+select::after {
+    content: '▼';
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
 @media screen and (max-width: 480px) {
     .logo-wrapper-header{
         display: none;

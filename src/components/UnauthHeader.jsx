@@ -6,12 +6,20 @@ import NeatlistLogo from '../images/neatlist-transparent.png'
 import MenuIcon from '../images/icons8-menu-white-50.png'
 
 import './UnauthHeader.css'
-const UnauthHeader = () => {
+const UnauthHeader = ({t, languages}) => {
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false);
-
+    const [lang, setLang] = useState("en");
+    const handleChange = (e) => {
+      e.preventDefault()
+      setLang(e.target.value);
+      let loc = "http://localhost:3000";
+      window.location.replace(
+          loc + "?lng=" + e.target.value
+      );
+    };
   const handleClick = (e, sectionId) => {
     if (location.pathname !== `/`) {
       e.preventDefault();
@@ -63,13 +71,25 @@ const UnauthHeader = () => {
                     </Link>
                     <div className="auth-nav-links-always-open">
                         <a  href="#third-section" onClick={(e) => handleClick(e, "third-section")}>
-                          Features
+                          {t('features')}
                         </a>
                         <a href="#fourth-section" onClick={(e) => handleClick(e, "fourth-section")}>
-                          About
+                          {t('about_link')}
                         </a>
-                        <Link to='LoginPage'>Login</Link>
-                        <Link to='SignupPage'>Sign Up</Link>
+                        <Link to='LoginPage'>{t('login')}</Link>
+                        <Link to='SignupPage'>{t('signup')}</Link>
+                        <select value={lang} onChange={handleChange}>
+                          {languages.map((item) => {
+                              return (
+                                  <option
+                                      key={item.value}
+                                      value={item.value}
+                                  >
+                                      {item.text}
+                                  </option>
+                              );
+                          })}
+                      </select>
                       </div>
                     <div
                       className="header-dropdown-menu"
@@ -82,13 +102,25 @@ const UnauthHeader = () => {
                       <div className="auth-nav-links">
                         
                         <a  href="#third-section" onClick={(e) => handleClick(e, "third-section")}>
-                          Features
+                          {t('features')}
                         </a>
                         <a href="#fourth-section" onClick={(e) => handleClick(e, "fourth-section")}>
-                          About
+                          {t('about_link')}
                         </a>
-                        <Link to='LoginPage'>Login</Link>
-                        <Link to='SignupPage'>Sign Up</Link>
+                        <Link to='LoginPage'>{t('login')}</Link>
+                        <Link to='SignupPage'>{t('signup')}</Link>
+                        <select value={lang} onChange={handleChange}>
+                          {languages.map((item) => {
+                              return (
+                                  <option
+                                      key={item.value}
+                                      value={item.value}
+                                  >
+                                      {item.text}
+                                  </option>
+                              );
+                          })}
+                      </select>
                       </div>
                     )}
                   </div>
