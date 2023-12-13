@@ -188,10 +188,9 @@ width: 200px;
 
 .pending {
     width: 48%;
-    border-right: 1px solid white;
     display: flex;
     flex-direction: column;
-    text-align: center;
+    text-align: left;
 }
 .pending h3{
     height: 30%;
@@ -199,7 +198,7 @@ width: 200px;
 .completed{
     display: flex;
     flex-direction: column;
-    text-align: center;
+    text-align: right;
     width: 48%;
 }
 .completed h3{
