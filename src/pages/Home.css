@@ -188,7 +188,7 @@ width: 200px;
 
 .pending {
     width: 48%;
-    
+    border-right: 1px solid white;
 }
 .pending h3{
     height: 30%;

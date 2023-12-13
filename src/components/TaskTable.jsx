@@ -5,7 +5,24 @@ import { useDB } from '../context/dbContext';
 
 import './TaskTable.css'
 
-const TaskTable = ({ taskslist, currentLayout, isDarkmode,CompletedIcon, PendingIcon, OverdueIcon,EditIcon,EditIconBlue,DeleteIcon,CheckIcon,SchoolIcon,PersonalIcon,WorkIcon,SaveIcon }) => {
+const TaskTable = ({ 
+    taskslist, 
+    currentLayout,
+     isDarkmode,
+     CompletedIcon, 
+     PendingIcon, 
+     OverdueIcon,
+     EditIcon,
+     EditIconBlue,
+     DeleteIcon,
+     CheckIcon,
+     SchoolIcon,
+     PersonalIcon,
+     WorkIcon,
+     SaveIcon 
+    
+    }) => {
+
     const auth = useAuth()
     const db = useDB()
     const [editableCell, setEditableCell] = useState(null);

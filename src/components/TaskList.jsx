@@ -41,7 +41,7 @@ const TaskList = ({search, isDarkmode}) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [show, setShow] = useState(false);
-    const [sort, setSort] = useState('')
+    const [sort, setSort] = useState(false)
     const [currentLayout, setCurrentLayout] = useState('table')
     const [taskslist, setTaskLists] = useState([]);
     const [sortedTasks, setSortedTasks] = useState([]);
@@ -118,14 +118,14 @@ const TaskList = ({search, isDarkmode}) => {
     const sortPrioAsc = () => {
       sortedTasks.sort((a, b) => a.priority - b.priority);
       setTaskLists(sortedTasks);
-      setSort('sortedAsc')
+      setSort(!sort)
         
     }
 
     const sortPrioDesc = () => {
       sortedTasks.sort((a, b) => b.priority - a.priority);
       setTaskLists(sortedTasks);
-      setSort('sortedDesc') 
+      setSort(!sort) 
     }
 
     const handleMarkTaskOverdue = async () => {
@@ -226,7 +226,7 @@ const TaskList = ({search, isDarkmode}) => {
                     </div>
 
                     <div className='sort-buttons' >
-                        {sort === 'sortedAsc'? <button onClick={()=>sortPrioDesc()}><img src={sortAscIcon}/></button>:<button onClick={() => sortPrioAsc()}><img src={SortDescIcon} alt='sort' /></button>}
+                        {sort? <button onClick={()=>sortPrioDesc()}><img src={sortAscIcon}/></button>:<button onClick={() => sortPrioAsc()}><img src={SortDescIcon} alt='sort' /></button>}
                     </div>
                     <Dropdown style={{display:'flex',alignItems:'center'}}>
                       <Dropdown.Toggle  style={{backgroundColor:'transparent', borderStyle:'none',display:'flex',alignItems:'center'}}>

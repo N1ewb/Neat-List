@@ -62,15 +62,14 @@ const UnauthHeader = () => {
                       </div>
                     </Link>
                     <div className="auth-nav-links-always-open">
-                      
-                         <Link to="/Dashboard" style={{borderBottom:'1px solid white'}}>Dashboard</Link>
                         <a  href="#third-section" onClick={(e) => handleClick(e, "third-section")}>
                           Features
                         </a>
                         <a href="#fourth-section" onClick={(e) => handleClick(e, "fourth-section")}>
                           About
                         </a>
-                       
+                        <Link to='LoginPage'>Login</Link>
+                        <Link to='SignupPage'>Sign Up</Link>
                       </div>
                     <div
                       className="header-dropdown-menu"
@@ -81,15 +80,15 @@ const UnauthHeader = () => {
 
                     {isOpen && ( 
                       <div className="auth-nav-links">
-                        <Link to='LoginPage'>Login</Link>
-                        <Link to='SignupPage'>Sign Up</Link>
+                        
                         <a  href="#third-section" onClick={(e) => handleClick(e, "third-section")}>
                           Features
                         </a>
                         <a href="#fourth-section" onClick={(e) => handleClick(e, "fourth-section")}>
                           About
                         </a>
-                       
+                        <Link to='LoginPage'>Login</Link>
+                        <Link to='SignupPage'>Sign Up</Link>
                       </div>
                     )}
                   </div>
