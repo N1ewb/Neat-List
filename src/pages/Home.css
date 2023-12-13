@@ -189,11 +189,17 @@ width: 200px;
 .pending {
     width: 48%;
     border-right: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 .pending h3{
     height: 30%;
 }
 .completed{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
     width: 48%;
 }
 .completed h3{
