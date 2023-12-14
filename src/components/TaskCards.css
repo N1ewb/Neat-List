@@ -118,10 +118,14 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    justify-content: center;
   }
   .task-cards-container-dark{
     max-height: auto;
     height: auto;
   }
-  
+  .task-cards{
+    display: flex;
+    justify-content: center;
+  }
 }
