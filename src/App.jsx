@@ -10,13 +10,13 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 
 const languages = [
-  { value: "en", text: "Langauge" },
+  { value: "en", text: "Language" },
   { value: "en", text: "English" },
   { value: "ja", text: "Japanese" },
   { value: "zh", text: "Chinese" },
   { value: 'ko', text: 'Korean'},
-  { value: 'fr', text: 'French'},
-  { value: "hi", text: "Hindi" }
+  { value: 'ar', text: 'Arabic'},
+  { value: "tl", text: "Tagalog" }
 ];
 
 function App() {

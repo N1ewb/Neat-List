@@ -72,13 +72,13 @@ const TaskTable = ({
         }
     }
 
-    const getFormattedDate = (timestamp) => {
-        const milliseconds = timestamp * 1000;
-        const dateObject = new Date(milliseconds);
-        const formattedDate = dateObject.toISOString().split('T')[0];
+    // const getFormattedDate = (timestamp) => {
+    //     const milliseconds = timestamp * 1000;
+    //     const dateObject = new Date(milliseconds);
+    //     const formattedDate = dateObject.toISOString().split('T')[0];
       
-        return formattedDate;
-      };
+    //     return formattedDate;
+    //   };
       
       useEffect(() => {
         const getTaskList = async () => {

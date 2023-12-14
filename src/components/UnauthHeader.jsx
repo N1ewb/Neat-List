@@ -12,14 +12,20 @@ const UnauthHeader = ({t, languages}) => {
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false);
     const [lang, setLang] = useState("en");
+
     const handleChange = (e) => {
-      e.preventDefault()
+      e.preventDefault();
       setLang(e.target.value);
-      let loc = "http://localhost:3000";
-      window.location.replace(
-          loc + "?lng=" + e.target.value
-      );
+    
+      const { search, pathname } = window.location;
+      const newParams = new URLSearchParams(search);
+      newParams.delete('lng');
+      newParams.set('lng', e.target.value); 
+    
+      const newUrl = `${pathname}${newParams ? `?${newParams.toString()}` : ''}`;
+      window.history.pushState({}, '', newUrl); 
     };
+
   const handleClick = (e, sectionId) => {
     if (location.pathname !== `/`) {
       e.preventDefault();

@@ -39,10 +39,7 @@ select {
     border: 1px solid #ddd; 
     cursor: pointer;
 }
-select:hover{
-    background-color: #008DBA;
-    color: white;
-}
+
 select::after {
     content: '▼';
     position: absolute;

@@ -53,30 +53,42 @@ export const DBProvider = ({ children }) => {
 
   const markTaskOverdue = async (id) => {
     try {
-      const tasksCollectionRef = collection(db, "Tasks");
-      const emptyCollectionSnapshot = await getDocs(tasksCollectionRef);
-  
-      if (emptyCollectionSnapshot.empty) {
-        return { message: "No tasks found in database" };
-      }
       const taskDocRef = doc(db, "Tasks", id);
       const taskSnapshot = await getDoc(taskDocRef);
-      
+  
       if (!taskSnapshot.exists()) {
-        return { message: "Task not found" };
+        return notifyError(new Error("Task not found"));
       }
-      const { status } = taskSnapshot.data();
-      if (status === "overdue") {
+  
+      const taskData = taskSnapshot.data();
+      const { deadlineDate, deadlineTime, status } = taskData;
+
+      const [deadlineHours, deadlineMinutes] = deadlineTime.split(':').map(Number);
+
+      const currentDate = new Date();
+      const currentHours = currentDate.getHours();
+      const currentMinutes = currentDate.getMinutes();
+      const formattedMinutes = currentMinutes < 10 ? `0${currentMinutes}` : currentMinutes;
+
+      if (
+        deadlineDate.toDate().getTime() < currentDate.getTime() &&
+        deadlineHours <= currentHours &&
+        deadlineMinutes <= formattedMinutes &&
+        status === "pending"
+      ) {
+        await updateDoc(taskDocRef, { status: "overdue" });
+
+        return { ...taskData, status: "overdue" };
+      } else if (status === "overdue") {
         return { message: "Task is already overdue" };
+      } else {
+        return { message: "Task deadline not met yet" };
       }
-      await updateDoc(taskDocRef, {
-        status: "overdue",
-      });
-      
     } catch (error) {
       return notifyError(error);
     }
   };
+  
 
   const markTaskComplete = async (id) => {
     try{

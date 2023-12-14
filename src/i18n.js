@@ -16,7 +16,7 @@ i18next
     ns: ["default"],
     defaultNS: "default",
 
-    supportedLngs: ["en","ja","zh","ko","fr","hi"],
+    supportedLngs: ["en","ja","zh","ko","ar","tl"],
     
     backend: {
       loadPath: loadPath

@@ -1,5 +1,7 @@
 import React, {useState,useEffect,useCallback } from 'react'
 import { useDB } from '../context/dbContext';
+import { useAuth } from '../context/AuthContext';
+import toast, { Toaster } from 'react-hot-toast';
 
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -10,7 +12,6 @@ import LayoutIcon2 from '../images/table-layout.png'
 import TableLayoutBlue from '../images/table-layout-blue.png'
 import AddIcon from '../images/icons8-add-50.png'
 import AddBlueIcon from '../images/icons8-add-blue-filled-50.png'
-import CatergoryIcon from '../images/icons8-category-40.png'
 import PendingIcon from '../images/icons8-pending-50.png'
 import CompletedIcon from '../images/icons8-task-completed-48.png'
 import OverdueIcon from '../images/icons8-overdue-64.png'
@@ -33,7 +34,7 @@ import TaskTable from './TaskTable';
 
 import './TaskList.css'
 import TaskCards from './TaskCards';
-import { useAuth } from '../context/AuthContext';
+
 
 const TaskList = ({search, isDarkmode}) => {
     const db = useDB()
@@ -49,6 +50,8 @@ const TaskList = ({search, isDarkmode}) => {
     const [temp, setTemp] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [overdueTasks, setOverdueTasks] = useState([]);
+    const [isMarkingOverdue, setIsMarkingOverdue] = useState(false);
+    const notifyOverdue = (name) => toast('Task OVerdue: ', name);
 
     const toggleDropdown = () => {
       setIsOpen(!isOpen);
@@ -129,43 +132,10 @@ const TaskList = ({search, isDarkmode}) => {
     }
 
     const handleMarkTaskOverdue = async () => {
-      if (taskslist.length !== 0) {
-        const currentTime = new Date().getTime();
-        const today = new Date();
-        const seconds = Math.floor(today.getTime() / 1000);
-        const filteredOverdueTasks = taskslist.filter((task) => {
-          const [deadlineHours, deadlineMinutes] = task.deadlineTime.split(':').map(Number);
-          const deadlineDateTime = new Date(
-            today.getFullYear(),
-            today.getMonth(),
-            today.getDate(),
-            deadlineHours,
-            deadlineMinutes
-          ).getTime();
-          return task.deadlineDate.seconds < seconds && deadlineDateTime <= currentTime && task.status === 'pending';
-        });
-    
-        setOverdueTasks(filteredOverdueTasks);
-    
-        try {
-          await Promise.all(filteredOverdueTasks.map((task) => db.markTaskOverdue(task.id)));
-          if(overdueTasks.length !== 0){
-            
-            setOverdueTasks([]); 
-          }
-          
-           
-        } catch (error) {
-          db.notifyError(error);
-        }
+      if(taskslist.length !== 0){
+        taskslist.map(async(task)=> await db.markTaskOverdue(task.id))
       }
     };
-    
-    useEffect(() => {
-      if(taskslist.length !== 0 && overdueTasks.length !== 0){
-        handleMarkTaskOverdue();
-      }
-    }, [taskslist,overdueTasks]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -279,7 +249,7 @@ const TaskList = ({search, isDarkmode}) => {
                 SaveIcon={SaveIcon}
             />
             )}
-
+            <Toaster />
             <TaskForm show={show} handleClose={handleClose} />
         </div>
     </>
