@@ -1,7 +1,7 @@
 .tasklist-container{
     display: flex;
     flex-direction: column;
-    max-height: 320px;
+    max-height: 100%;
     width: 100%;
     font-family: 'Genos', sans-serif;
     
@@ -28,7 +28,7 @@
     align-items: center;
     height: 20px;
 }
-.sort-buttons button img:hover{
+button img:hover{
     transform: scale(1.05);
 }
 .sort-buttons img:hover{

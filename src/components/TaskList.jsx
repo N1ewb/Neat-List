@@ -4,7 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import toast, { Toaster } from 'react-hot-toast';
 
 import Button from 'react-bootstrap/Button';
-import Dropdown from 'react-bootstrap/Dropdown';
+import {OverlayTrigger} from 'react-bootstrap';
+import { Tooltip } from 'react-bootstrap';
 
 import LayoutIcon from '../images/card-layout.png'
 import CardLayoutIcon from '../images/card-layout-blue.png'
@@ -28,12 +29,14 @@ import SchoolIcon from '../images/icons8-school-64.png'
 import PersonalIcon from '../images/icons8-person-80.png'
 import WorkIcon from '../images/icons8-permanent-job-80.png'
 import SaveIcon from '../images/icons8-save-50.png'
+import InfoIcon from '../images/icons8-info-50.png'
 
 import TaskForm from './TaskForm'
 import TaskTable from './TaskTable';
 
 import './TaskList.css'
 import TaskCards from './TaskCards';
+
 
 
 const TaskList = ({search, isDarkmode}) => {
@@ -48,14 +51,8 @@ const TaskList = ({search, isDarkmode}) => {
     const [sortedTasks, setSortedTasks] = useState([]);
     const [filteredTasks, setFilteredTasks] = useState([]);
     const [temp, setTemp] = useState([]);
-    const [isOpen, setIsOpen] = useState(false);
-    const [overdueTasks, setOverdueTasks] = useState([]);
-    const [isMarkingOverdue, setIsMarkingOverdue] = useState(false);
-    const notifyOverdue = (name) => toast('Task OVerdue: ', name);
+    const [archive, setArchive] = useState(false)
 
-    const toggleDropdown = () => {
-      setIsOpen(!isOpen);
-    };
 
     const handleGetTasks = useCallback (async (uid) => {
         const tasks = await db.getUserTask(uid)
@@ -82,6 +79,18 @@ const TaskList = ({search, isDarkmode}) => {
       }
       }, [taskslist,temp]);
     
+      const filterArchive = useCallback((selectedArchive)=>{
+        if(archive){
+          const filtered = temp.filter((task)=> task.status === selectedArchive)
+            setFilteredTasks(filtered)
+            setArchive(!archive)
+          
+        } else {
+          setFilteredTasks(taskslist)
+          setArchive(!archive)
+        }
+      },[taskslist, temp,archive])
+
     // const sortDeadlineAsc = () => {
     //     sortedTasks.sort((a, b) => {
     //         return new Date(a.deadline) - new Date(b.deadline);
@@ -168,6 +177,13 @@ const TaskList = ({search, isDarkmode}) => {
         }
      }, [search, searchTask,taskslist]);
 
+     const archiveTooltip = (props) => (
+      <Tooltip id="button-tooltip" {...props}>
+        Completed Tasks
+      </Tooltip>
+
+    );
+
   return (
     <>
        <div className='tasklist-container'>
@@ -197,16 +213,9 @@ const TaskList = ({search, isDarkmode}) => {
                     <div className='sort-buttons' >
                         {sort? <button onClick={()=>sortPrioDesc()}><img src={sortAscIcon}/></button>:<button onClick={() => sortPrioAsc()}><img src={SortDescIcon} alt='sort' /></button>}
                     </div>
-                    <Dropdown style={{display:'flex',alignItems:'center'}}>
-                      <Dropdown.Toggle  style={{backgroundColor:'transparent', borderStyle:'none',display:'flex',alignItems:'center'}}>
-                      <div className='menu-button' id="dropdown-basic"><img src={MenuIcon} alt='menu' height='30px' /></div>
-                      </Dropdown.Toggle>
-
-                      <Dropdown.Menu >
-                        <Dropdown.Item ><img src={ArhiveIcon} alt='archived' height='30px' /> <span>Arhive</span></Dropdown.Item>
-                        <Dropdown.Item ><img src={DeletedIcon} alt='deleted' height='30px' /> <span>Deleted</span></Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                    <OverlayTrigger placement="left" delay={{ show: 250, hide: 400 }} overlay={archiveTooltip}>
+                      <button style={{backgroundColor:'transparent', borderStyle:'none', display:'flex', alignItems:'center'}} onClick={()=>filterArchive('completed')} ><img src={ArhiveIcon} alt='archived' height='30px' /> </button>
+                    </OverlayTrigger>
                     <div className='change-layout'>
                         {currentLayout === 'table'? <img onClick={()=>changeLayoutCards()} src={isDarkmode?CardLayoutIcon:LayoutIcon} alt="layout" width='25px'/>: <img onClick={()=>changeLayoutTable()} src={isDarkmode? TableLayoutBlue: LayoutIcon2} alt="layout" width='25px'/>}
                     </div>
@@ -229,6 +238,7 @@ const TaskList = ({search, isDarkmode}) => {
                 PersonalIcon={PersonalIcon}
                 WorkIcon={WorkIcon}
                 SaveIcon={SaveIcon}
+                InfoIcon={InfoIcon}
             />
             ) : (
             <TaskCards
@@ -247,6 +257,7 @@ const TaskList = ({search, isDarkmode}) => {
                 PersonalIcon={PersonalIcon}
                 WorkIcon={WorkIcon}
                 SaveIcon={SaveIcon}
+                InfoIcon={InfoIcon}
             />
             )}
             <Toaster />

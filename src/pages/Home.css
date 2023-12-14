@@ -13,12 +13,13 @@ width: 100%;
 display: flex;
 flex-direction: column;
 padding:10px;
+height: 100%;
 }
 .tasklist {
 display: flex;
 justify-content: center;
-align-items: center;
 max-width: 100%;
+height:62%;
 }
 .dashboard-navbar{
     display: flex;

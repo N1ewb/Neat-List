@@ -3,6 +3,11 @@ import React, {useState, useEffect} from 'react'
 import { useAuth } from '../context/AuthContext';
 import { useDB } from '../context/dbContext';
 
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+import Button from 'react-bootstrap/Button';
+import { Popover } from 'react-bootstrap';
+
 import './TaskTable.css'
 
 const TaskTable = ({ 
@@ -19,7 +24,8 @@ const TaskTable = ({
      SchoolIcon,
      PersonalIcon,
      WorkIcon,
-     SaveIcon 
+     SaveIcon,
+     InfoIcon 
     
     }) => {
 
@@ -72,13 +78,13 @@ const TaskTable = ({
         }
     }
 
-    // const getFormattedDate = (timestamp) => {
-    //     const milliseconds = timestamp * 1000;
-    //     const dateObject = new Date(milliseconds);
-    //     const formattedDate = dateObject.toISOString().split('T')[0];
-      
-    //     return formattedDate;
-    //   };
+    const getFormattedDate = (timestamp) => {
+        const milliseconds = timestamp * 1000;
+        const dateObject = new
+       
+      Date(milliseconds);
+        return dateObject.toLocaleDateString();
+      };
       
       useEffect(() => {
         const getTaskList = async () => {
@@ -97,7 +103,19 @@ const TaskTable = ({
         };
         getTaskList();
        }, [taskslist, db,currentLayout]);
-       
+       const popover = (task) => (
+        <Popover id={`popover-${task.id}`}>
+          <Popover.Header as="h3">{task.name}</Popover.Header>
+          <Popover.Body>
+            <p>Category: {task.category}</p>
+            <p>Priority: {getPriorityString(task.priority)}</p>
+            <p>Date Created: {getFormattedDate(task.Timestamp.seconds)}</p>
+            <p>Deadline Date: {getFormattedDate(task.deadlineDate.seconds)} </p>
+            <p>Deadline Time: {task.deadlineTime}</p>
+            <p>Status: {task.status}</p>
+          </Popover.Body>
+        </Popover>
+        );
   return (
     <>
         <div className={isDarkmode? 'task-table-dark':'task-table'}>
@@ -106,16 +124,12 @@ const TaskTable = ({
                 tasksList.map((task, index) =>
                 task.user === auth.currentUser.uid ? (
                     <div key={task.id} className={isDarkmode?'card-dark':'card'}>
-
-                    <div className="card-item status">
-                    {editableCell === index? <button onClick={()=>handleMarkTaskComplete(task.id)}><img src={CheckIcon} alt='check' height='27px'/></button>: 
-                        task.status === 'pending' ? (
-                            <img src={PendingIcon} alt='pending' height='20px'/>
-                        ) : task.status === 'completed' ? (
-                            <img src={CompletedIcon} alt='Completed' height='20px'/>
-                        ) : (
-                            <img src={OverdueIcon} alt='overdue' height='20px'/>
-                        )}
+                    
+                    <div className='card-tem-info'>
+                   
+                    <OverlayTrigger placement="top" overlay={popover(task)}>
+                        <Button style={{backgroundColor:'transparent',borderStyle:'none', display:'flex', alignItems:'center'}} variant="success"><img src={InfoIcon} alt='more infon' width='20px'/></Button>
+                    </OverlayTrigger>
                     </div>
 
                     <div className="card-item-name">
@@ -194,7 +208,16 @@ const TaskTable = ({
                         <div className='priority'>{task.status !== 'overdue'? <p>{getPriorityString(task.priority)}</p> : <p style={{color:'red'}}>Overdue</p> }<span style={{ backgroundColor: task.status !== 'overdue' ? (task.priority === '1' ? '#58d332' : task.priority === '2' ? '#E2BE00' : task.priority === '3' ? '#9D0000' : 'green') : 'red' }}></span>                        </div>
                         }
                     </div>
-
+                    <div className="card-item status">
+                    {editableCell === index? <button onClick={()=>handleMarkTaskComplete(task.id)}><img src={CheckIcon} alt='check' height='27px'/></button>: 
+                        task.status === 'pending' ? (
+                            <img src={PendingIcon} alt='pending' height='20px'/>
+                        ) : task.status === 'completed' ? (
+                            <img src={CompletedIcon} alt='Completed' height='20px'/>
+                        ) : (
+                            <img src={OverdueIcon} alt='overdue' height='20px'/>
+                        )}
+                    </div>
                     <div className='card-item-user-action'>
                     <div className='action-button delete-button'>
                         {editableCell === index || task.status === 'overdue'? <button onClick={()=>handleDeleteTask(task.id)}><img src={DeleteIcon} alt='Delete' height='23px'/></button>: <div></div>}

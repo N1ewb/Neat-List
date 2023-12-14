@@ -57,7 +57,7 @@ export const DBProvider = ({ children }) => {
       const taskSnapshot = await getDoc(taskDocRef);
   
       if (!taskSnapshot.exists()) {
-        return notifyError(new Error("Task not found"));
+        return null
       }
   
       const taskData = taskSnapshot.data();
@@ -76,9 +76,8 @@ export const DBProvider = ({ children }) => {
         deadlineMinutes <= formattedMinutes &&
         status === "pending"
       ) {
-        await updateDoc(taskDocRef, { status: "overdue" });
+        return await updateDoc(taskDocRef, { status: "overdue" });
 
-        return { ...taskData, status: "overdue" };
       } else if (status === "overdue") {
         return { message: "Task is already overdue" };
       } else {

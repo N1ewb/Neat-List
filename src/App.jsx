@@ -10,7 +10,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 
 const languages = [
-  { value: "en", text: "Language" },
+  { value: "enn", text: "Language" },
   { value: "en", text: "English" },
   { value: "ja", text: "Japanese" },
   { value: "zh", text: "Chinese" },
