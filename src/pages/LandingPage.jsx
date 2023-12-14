@@ -7,7 +7,7 @@ import Header from '../components/Header'
 import LoginBG from '../images/loginbg.png'
 import TaskImg from '../images/task-organize.jpg'
 import UserFriendlyImg from '../images/user-friendly.png'
-import NotifImg from '../images/reminder-sky-background_118813-968.jpg'
+import NotifImg from '../images/voicecommand.png'
 import SearchImg from '../images/two-tiny-characters-examining-big-cloud_74855-14190.png'
 import Organized from '../images/pexels-photo-4360353.jpeg'
 import NeatlistLogo from '../images/neatlist-transparent.png'
@@ -90,10 +90,10 @@ const LandingPage = ({languages, t}) => {
                                 <img src={NotifImg} alt="reminder"/>
                             </div>
                             <div className='feature-title'>
-                                <h3>{t('reminders')}</h3>
+                                <h3>{t('vm')}</h3>
                             </div>
                             <div className='feature-body'>
-                                <p>{t('t_feature_body')}</p>
+                                <p>{t('voice-command-feature')}</p>
                             </div>
                         </div>
 

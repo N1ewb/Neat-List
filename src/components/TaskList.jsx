@@ -41,7 +41,7 @@ import TaskCards from './TaskCards';
 
 
 
-const TaskList = ({search, isDarkmode}) => {
+const TaskList = ({search, isDarkmode, changeTheme}) => {
     const db = useDB()
     const auth = useAuth()
     const handleClose = () => setShow(false);
@@ -62,6 +62,9 @@ const TaskList = ({search, isDarkmode}) => {
       browserSupportsSpeechRecognition
     } = useSpeechRecognition();
     
+    const handleChangeTheme = ()=> {
+      changeTheme()
+    }
 
     const handleGetTasks = useCallback (async (uid) => {
         const tasks = await db.getUserTask(uid)
@@ -182,7 +185,13 @@ const TaskList = ({search, isDarkmode}) => {
             filterArchive('completed')
             resetTranscript();
             break;
+          case 'theme':
+            handleChangeTheme()
+            resetTranscript();
+            break;
+          
           default:
+            console.log(command[0])
             resetTranscript();
         }
         }, 2700);
@@ -235,6 +244,7 @@ const TaskList = ({search, isDarkmode}) => {
           <p>search + value: Search task</p>
           <p>category: Filter category</p>
           <p>archive: See completed Tasks</p>
+          <p>theme: Change Theme</p>
         </Tooltip>
     );
     

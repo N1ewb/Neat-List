@@ -1,7 +1,9 @@
 import React,{useState, useEffect} from 'react'
 import { useAuth } from '../context/AuthContext';
 import { useDB } from '../context/dbContext';
-
+import { Button } from 'react-bootstrap';
+import { Popover } from 'react-bootstrap';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import './TaskCards.css'
 
 const TaskCards = ({taskslist,
@@ -17,7 +19,8 @@ const TaskCards = ({taskslist,
     PersonalIcon,
     WorkIcon,
     SaveIcon,
-    OverdueIcon
+    OverdueIcon,
+    InfoIcon
     }) => {
     const auth = useAuth();
     const db = useDB()
@@ -62,7 +65,14 @@ const TaskCards = ({taskslist,
                 return ''
         }
     }
-
+    const getFormattedDate = (timestamp) => {
+        const milliseconds = timestamp * 1000;
+        const dateObject = new
+       
+      Date(milliseconds);
+        return dateObject.toLocaleDateString();
+      };
+      
     useEffect(() => {
         const getTaskList = async () => {
           try {
@@ -79,7 +89,19 @@ const TaskCards = ({taskslist,
         };
         getTaskList();
        }, [taskslist, db,currentLayout]);
-
+       const popover = (task) => (
+        <Popover id={`popover-${task.id}`}>
+          <Popover.Header as="h3">{task.name}</Popover.Header>
+          <Popover.Body>
+            <p>Category: {task.category}</p>
+            <p>Priority: {getPriorityString(task.priority)}</p>
+            <p>Date Created: {getFormattedDate(task.Timestamp.seconds)}</p>
+            <p>Deadline Date: {getFormattedDate(task.deadlineDate.seconds)} </p>
+            <p>Deadline Time: {task.deadlineTime}</p>
+            <p>Status: {task.status}</p>
+          </Popover.Body>
+        </Popover>
+        );
   return (
     <>
         <div className={isDarkmode? 'task-cards-container-dark':'task-cards-container'}>
@@ -87,8 +109,24 @@ const TaskCards = ({taskslist,
             {tasksList ? (
                 tasksList.map((task, index) =>
                 task.user === auth.currentUser.uid ? (
-                    <div key={task.id} className={isDarkmode?'task-card-dark':'task-card'}>
-
+                    <div key={task.id} className={isDarkmode?'task-card-dark':'task-card'} style={{backgroundColor:task.status === 'overdue'?'#FF8282':'#fafafa'}}>
+                    <div className='card-head'>
+                        <div className='card-tem-info'>
+                            <OverlayTrigger placement="top" overlay={popover(task)}>
+                                <Button style={{backgroundColor:'transparent',borderStyle:'none', display:'flex', alignItems:'center'}} variant="success"><img src={InfoIcon} alt='more infon' width='20px'/></Button>
+                            </OverlayTrigger>
+                        </div>
+                        <div className="item-card-status">
+                        {editableCell === index? <button onClick={()=>handleMarkTaskComplete(task.id)}><img src={CheckIcon} alt='check' height='27px'/></button>: 
+                            task.status === 'pending' ? (
+                                <img src={PendingIcon} alt='pending' height='20px'/>
+                            ) : task.status === 'completed' ? (
+                                <img src={CompletedIcon} alt='Completed' height='20px'/>
+                            ) : (
+                                <img src={OverdueIcon} alt='overdue' height='20px'/>
+                            )}
+                        </div>
+                    </div>
                     <div className="item-card-name">
                         {editableCell === index ? (
                             <input
@@ -171,16 +209,7 @@ const TaskCards = ({taskslist,
                     </div>
 
                     <div className='item-card-user-action'>
-                    <div className="item-card status">
-                    {editableCell === index? <button onClick={()=>handleMarkTaskComplete(task.id)}><img src={CheckIcon} alt='check' height='27px'/></button>: 
-                        task.status === 'pending' ? (
-                            <img src={PendingIcon} alt='pending' height='20px'/>
-                        ) : task.status === 'completed' ? (
-                            <img src={CompletedIcon} alt='Completed' height='20px'/>
-                        ) : (
-                            <img src={OverdueIcon} alt='overdue' height='20px'/>
-                        )}
-                    </div>
+                    
                     <div className='card-action-button card-delete-button'>
                         {editableCell === index || task.status === 'overdue'? <button onClick={()=>handleDeleteTask(task.id)}><img src={DeleteIcon} alt='Delete' height='23px'/></button>: <div></div>}
                     </div>

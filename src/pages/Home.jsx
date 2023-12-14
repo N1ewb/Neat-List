@@ -7,8 +7,8 @@ import './Home.css'
 
 import TaskList from '../components/TaskList'
 import HomeSidebar from '../components/HomeSidebar'
-import NotificationBlueIcon from '../images/icons8-notification-96(-xxxhdpi).png'
-import NotificationWhiteIcon from '../images/icons8-notification-white-96.png'
+// import NotificationBlueIcon from '../images/icons8-notification-96(-xxxhdpi).png'
+// import NotificationWhiteIcon from '../images/icons8-notification-white-96.png'
 import UserIcon from '../images/icons8-user-40.png'
 import NeatlistLogo from '../images/Neatlist small.png'
 import LogoutIcon from '../images/icons8-logout-50.png'
@@ -222,7 +222,7 @@ const Home = () => {
 
                   <input name='search' onChange={(e)=>setSearch(e.target.value)} placeholder='Search'/>
                   <div className='user-info'>
-                    <img className={isDarkmode?'notfication-img-dark':'notfication-img'} src={isDarkmode?NotificationBlueIcon:NotificationWhiteIcon} alt='notification' height='40px' />
+                    
                     <div className='user-profile'>
                       <img src={auth.currentUser && auth.currentUser.photoURL?auth.currentUser.photoURL:UserIcon} alt='user-icon' height='50px' />
                       <h6>{auth.currentUser? auth.currentUser.displayName: 'Unknown'}</h6>
@@ -264,7 +264,7 @@ const Home = () => {
                   </div>
                 </div>
                 <section className='tasklist'>
-                  <TaskList search={search} isDarkmode={isDarkmode}/> 
+                  <TaskList search={search} isDarkmode={isDarkmode} changeTheme={changeTheme}/> 
                 </section>
             </div>
           </div>
