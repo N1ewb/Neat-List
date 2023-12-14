@@ -1,1 +1,145 @@
-.sidebar-container{display:flex;flex-direction:column;width:25%;background-color:#CDF5FD;padding:30px 40px 5px 40px;justify-content:space-between;font-family:'Genos',sans-serif;font-size:24px;}.col{padding:40px 0px 0px 0px;}.sidebar-container p{color:#5f5f5f;}.sidebar-logo-wrapper img{border-radius:10px;padding:10px;}.dashboard-button{background-color:#008DBA;display:flex;align-items:center;padding:5px 15px 5px 15px;text-align:center;vertical-align:middle;font-weight:500;gap:5px;border-radius:15px;margin-top:-10px;margin-bottom:30px;}.dashboard-button p{color:white;height:24px;text-align:center;font-size:26px;}.spacer{height:20%;}.sidebar-links{display:flex;flex-direction:column;gap:10px;}.user-actions{display:flex;flex-direction:column;font-size:20px;margin:0;width:100%;gap:10px;}.theme{display:flex;justify-content:space-between;}.settings{display:flex;cursor:pointer;width:48%;vertical-align:middle;align-items:center;text-align:justify;flex-direction:row;justify-content:space-between;}.settings p{margin:0;}.logout{cursor:pointer;display:flex;justify-content:space-between;width:44%;align-items:center;text-align:center;padding:2px;}.logout p{margin:0;}.sidebar-links p{padding:5px 5px 5px 12px;border-radius:10px;font-size:18px;}.sidebar-links p:hover{background-color:#008DBA;}.dark-mode{background-color:#23252b;}.dashboard-button-dark{background-color:#003E52;display:flex;align-items:center;padding:5px 15px 5px 15px;text-align:center;vertical-align:middle;font-weight:500;gap:5px;border-radius:15px;margin-top:-10px;margin-bottom:30px;}.dashboard-button-dark p{color:white;height:24px;text-align:center;font-size:26px;}.col-dark{padding:40px 0px 0px 0px;color:white;}.col-dark p{color:white;}.sidebar-links-dark{cursor:pointer;padding:5px;}.sidebar-links-dark p{padding:5px 5px 5px 12px;border-radius:10px;font-size:18px;}.sidebar-links-dark p:hover{background-color:#303f50;}.media screen and (max-width:485px){.sidebar-container{display:none;}}
+.sidebar-container{
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    background-color: #CDF5FD;
+    padding: 30px 40px 5px 40px;
+    justify-content: space-between;
+    font-family: 'Genos', sans-serif;
+    font-size: 24px;
+}
+.col{
+    padding: 40px 0px 0px 0px;
+}
+.sidebar-container p{
+    color: #5f5f5f;
+}
+.sidebar-logo-wrapper img{
+    border-radius: 10px;
+   
+    padding: 10px;
+}
+.dashboard-button{
+    background-color: #008DBA;
+    display: flex;
+    align-items: center;
+    padding: 5px 15px  5px 15px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 500;
+    gap: 5px;
+    border-radius: 15px;
+    margin-top: -10px;
+    margin-bottom: 30px;
+}
+.dashboard-button p{
+    color: white;
+    height: 24px;
+    text-align: center;
+    font-size: 26px;
+}
+.spacer{
+    height: 20%;
+
+}
+.sidebar-links{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    
+}
+.user-actions{
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    margin: 0;
+    width: 100%;
+    gap: 10px; 
+}
+.theme{
+    display: flex;
+    justify-content: space-between;
+}
+.settings{
+    display: flex;
+    cursor: pointer;
+    width: 48%;
+    vertical-align: middle;
+    align-items: center;
+    text-align:justify ;
+    flex-direction: row;
+    justify-content: space-between;
+   
+}
+.settings p{
+    margin: 0;
+}
+.logout{
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    width: 44%;
+    align-items: center;
+    text-align: center;
+    padding: 2px;
+}
+.logout p{
+    margin: 0;
+}
+.sidebar-links p{
+    padding: 5px 5px 5px 12px;
+    border-radius: 10px;
+    font-size: 18px;
+}
+.sidebar-links p:hover{
+    background-color: #008DBA;
+}
+/* Dark Mode */
+.dark-mode {
+    background-color: #23252b;
+
+}
+.dashboard-button-dark{
+    background-color: #003E52;
+    display: flex;
+    align-items: center;
+    padding: 5px 15px  5px 15px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 500;
+    gap: 5px;
+    border-radius: 15px;
+    margin-top: -10px;
+    margin-bottom: 30px;
+}
+.dashboard-button-dark p{
+    color: white;
+    height: 24px;
+    text-align: center;
+    font-size: 26px;
+}
+.col-dark {
+    padding: 40px 0px 0px 0px;
+    color: white;
+}
+.col-dark p{
+    color: white;
+}
+.sidebar-links-dark {
+    cursor: pointer;
+    padding: 5px;
+}
+.sidebar-links-dark p{
+    padding: 5px 5px 5px 12px;
+    border-radius: 10px;
+    font-size: 18px;
+}
+.sidebar-links-dark p:hover{
+    background-color: #303f50;
+}
+
+@media screen and (max-width: 485px) {
+    .sidebar-container{
+        display: none;
+    }
+}

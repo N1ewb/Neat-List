@@ -1,19 +1,158 @@
-.tasklist-container{display:flex;flex-direction:column;max-height:100%;width:100%;font-family:'Genos',sans-serif;}
-.tasklist-header{display:flex;justify-content:space-between;width:100%;height:60px;background-color:white;align-items:center;text-align:center;vertical-align:middle;padding:10px;}
-.head-title{display:flex;}
-.sort-buttons button{background-color:transparent;border-style:none;display:flex;align-items:center;height:20px;}
-button img:hover, .sort-buttons img:hover{transform:scale(1.05);}
-.sort-buttons button img{height:28px;}
-.change-layout img:hover{transform:scale(1.05);}
-.user-action{display:flex;gap:20px;height:50%;}
-.change-layout{cursor:pointer;display:flex;align-items:center;}
-.tasklist-ontainer{font-family:Arial,sans-serif;background-color:#f2f2f2;padding:20px;border-radius:5px;box-shadow:0px 0px 10px rgba(0,0,0,0.1);margin:0 auto;text-align:center;overflow:auto;}
-.sort-category{display:flex;align-items:center;margin-right:20px;}
-.sort-category img{margin-right:5px;}
-.sort-category select{padding:0px 8px 0px 12px;font-size:14px;border:1px solid #ccc;border-radius:4px;height:28px;width:100px;}
-.menu-button{display:flex;align-items:center;}
-.menu-button img:hover{transform:scale(1.05);}
-.tasklist-header-dark{display:flex;justify-content:space-between;width:100%;height:60px;background-color:#4A4A4A;align-items:center;text-align:center;vertical-align:middle;padding:10px;}
+.tasklist-container{
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    width: 100%;
+    font-family: 'Genos', sans-serif;
+    
+}
+.tasklist-header{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 60px;
+    background-color: white;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+    
+}
+.head-title{
+    display: flex;
+}
+.sort-buttons button{
+    background-color: transparent;
+    border-style: none;
+    display: flex;
+    align-items: center;
+    height: 20px;
+}
+button img:hover{
+    transform: scale(1.05);
+}
+.sort-buttons img:hover{
+    transform: scale(1.05);
+}
+.sort-buttons button img{
+    height: 28px;
+}
+.change-layout img:hover{
+    transform: scale(1.05);
+}
+.user-action{
+    display: flex;
+    gap: 20px;
+    height: 50%;
+}
+.change-layout{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.tasklist-ontainer {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    text-align: center;
+    overflow: auto;
+}
+.sort-category {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
 
-@media screen and (max-width:485px){.tasklist-container{display:flex;flex-direction:column;max-height:100%;height:auto;width:100%;font-family:'Genos',sans-serif;}}
-@media screen and (max-width:485px){.tasklist{display:flex;justify-content:flex-start;}.tasklist-container{display:flex;flex-direction:column;height:auto;width:100%;font-family:'Genos',sans-serif;}.tasklist-header{max-width:100%;display:flex;justify-content:flex-start;}.tasklist-header img{height:20px;width:20px;}.tasklist-header-dark img{height:20px;width:20px;}.sort-buttons button img{height:20px;}.user-action{width:65%;display:flex;justify-content:flex-end;gap:4%;}.sort-category select{padding:0px 8px 0px 12px;font-size:14px;border:1px solid #ccc;border-radius:4px;height:28px;width:80px;}}
+.sort-category img {
+margin-right: 5px;
+}
+
+.sort-category select {
+    padding: 0px 8px 0px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 28px;
+    width: 100px;
+}
+.menu-button {
+    display: flex;
+    align-items: center;
+}
+.menu-button img:hover{
+    transform: scale(1.05);
+}
+/*Dark mode*/ 
+.tasklist-header-dark{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 60px;
+    background-color: #4A4A4A;
+    align-items: center;
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+    
+}
+
+/*Mobile Mode*/
+@media screen and (max-width: 485px) {
+    .tasklist-container{
+        display: flex;
+        flex-direction: column;
+        max-height: 100%;
+        height: auto;
+        width: 100%;
+        font-family: 'Genos', sans-serif;
+        
+    }
+}
+
+/*Iphone Se*/
+@media screen and (max-width: 485px ) {
+    .tasklist{
+        display: flex;
+        justify-content: flex-start;
+    }
+    .tasklist-container{
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        width: 100%;
+        font-family: 'Genos', sans-serif;
+    }
+    .tasklist-header{
+        max-width: 100%;
+        display: flex;
+        justify-content: flex-start;
+    }
+    .tasklist-header img{
+        height: 20px;
+        width: 20px;
+    }
+    .tasklist-header-dark img{
+        height: 20px;
+        width: 20px;
+    }
+    .sort-buttons button img{
+        height: 20px;
+    }
+    .user-action {
+        width: 65%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 4%;
+    }
+    .sort-category select {
+        padding: 0px 8px 0px 12px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        height: 28px;
+        width: 80px;
+    }
+}
