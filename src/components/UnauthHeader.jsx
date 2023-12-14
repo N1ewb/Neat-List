@@ -82,8 +82,8 @@ const UnauthHeader = ({t, languages}) => {
                         <a href="#fourth-section" onClick={(e) => handleClick(e, "fourth-section")}>
                           {t('about_link')}
                         </a>
-                        <Link to='LoginPage'>{t('login')}</Link>
-                        <Link to='SignupPage'>{t('signup')}</Link>
+                        <Link to='/LoginPage'>{t('login')}</Link>
+                        <Link to='/SignupPage'>{t('signup')}</Link>
                         <select value={lang} onChange={handleChange}>
                           {languages.map((item) => {
                               return (
@@ -113,8 +113,8 @@ const UnauthHeader = ({t, languages}) => {
                         <a href="#fourth-section" onClick={(e) => handleClick(e, "fourth-section")}>
                           {t('about_link')}
                         </a>
-                        <Link to='LoginPage'>{t('login')}</Link>
-                        <Link to='SignupPage'>{t('signup')}</Link>
+                        <Link to='/LoginPage'>{t('login')}</Link>
+                        <Link to='/SignupPage'>{t('signup')}</Link>
                         <select value={lang} onChange={handleChange}>
                           {languages.map((item) => {
                               return (
