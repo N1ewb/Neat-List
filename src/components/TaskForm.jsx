@@ -3,12 +3,15 @@ import { useDB } from '../context/dbContext'
 import { useAuth } from '../context/AuthContext'
 import { Timestamp } from 'firebase/firestore'
 import toast, { Toaster } from 'react-hot-toast'
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 import './TaskForm.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import MicIcon from '../images/icons8-mic-48.png'
+import StopIcon from '../images/icons8-stop-circled-50.png'
 
 const TaskForm = ({show, handleClose}) => {
     const db = useDB()
@@ -21,8 +24,25 @@ const TaskForm = ({show, handleClose}) => {
     const deadlineTimeRef = useRef()
     const oneDayInMilliseconds = 1000 * 60 * 60 * 24;
 
+    const {
+        transcript,
+        listening,
+        resetTranscript,
+        browserSupportsSpeechRecognition
+      } = useSpeechRecognition();
+      if (!browserSupportsSpeechRecognition) {
+        return <span>Browser doesn't support speech recognition.</span>;
+      }
+
+      
+
     const handleAddTask = async () => {
-        const taskName = taskNameRef.current.value;
+        var taskName;
+        if(transcript){
+            taskName = transcript
+        } else {
+            taskName = taskNameRef.current.value;
+        }
         const category = categoryRef.current.value;
         const priority = priorityRef.current.value;
         const dDate = deadlineDateRef.current.value;
@@ -34,6 +54,7 @@ const TaskForm = ({show, handleClose}) => {
             const yesterday = new Date(today.getTime() - oneDayInMilliseconds)
             const deadlineDate = new Date(dDate); 
             if (deadlineDate > yesterday) {
+                resetTranscript()
                 await db.AddTask(
                     taskName,
                     category,
@@ -62,7 +83,12 @@ const TaskForm = ({show, handleClose}) => {
             </Modal.Header>
             <Modal.Body>
                 <div className='task-form'>
-                <input name='task-input' placeholder='Your Task' ref={taskNameRef} />
+                    <div className='task-name-wrapper'>
+                    {!listening ? 
+                        <button className='mic-button' onClick={SpeechRecognition.startListening} style={{backgroundColor:'transparent', borderStyle:'none',display:'flex',alignItems:'center'}} ><img className='mic' src={MicIcon} alt='mic' width='20px' /></button> :
+                        <button className='mic-button' onClick={SpeechRecognition.stopListening} style={{backgroundColor:'transparent', borderStyle:'none',display:'flex',alignItems:'center'}} ><img className='mic' src={StopIcon} alt='mic' width='20px' /></button>}
+                        <input name='task-input' placeholder={transcript? transcript: 'Task Name'} ref={taskNameRef} />
+                    </div>
                     <label htmlFor="category">Category</label>
                     <select id="category" ref={categoryRef}>
                         <option value=""></option>
