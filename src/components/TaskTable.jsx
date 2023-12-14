@@ -89,7 +89,7 @@ const TaskTable = ({
       useEffect(() => {
         const getTaskList = async () => {
           try {
-            if(currentLayout === 'table'){
+            if(currentLayout){
                 setTaskLists(taskslist);
                 const unsubscribe = db.subscribeToTasksChanges((updatedTasks) => {
                     setTaskLists(taskslist);

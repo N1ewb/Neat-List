@@ -2,7 +2,7 @@ import React, {useState,useEffect,useCallback } from 'react'
 import { useDB } from '../context/dbContext';
 import { useAuth } from '../context/AuthContext';
 import toast, { Toaster } from 'react-hot-toast';
-
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import Button from 'react-bootstrap/Button';
 import {OverlayTrigger} from 'react-bootstrap';
 import { Tooltip } from 'react-bootstrap';
@@ -30,6 +30,8 @@ import PersonalIcon from '../images/icons8-person-80.png'
 import WorkIcon from '../images/icons8-permanent-job-80.png'
 import SaveIcon from '../images/icons8-save-50.png'
 import InfoIcon from '../images/icons8-info-50.png'
+import MicIcon from '../images/icons8-mic-48.png'
+import StopIcon from '../images/icons8-stop-circled-50.png'
 
 import TaskForm from './TaskForm'
 import TaskTable from './TaskTable';
@@ -46,13 +48,20 @@ const TaskList = ({search, isDarkmode}) => {
     const handleShow = () => setShow(true);
     const [show, setShow] = useState(false);
     const [sort, setSort] = useState(false)
-    const [currentLayout, setCurrentLayout] = useState('table')
+    const [currentLayout, setCurrentLayout] = useState(true)
     const [taskslist, setTaskLists] = useState([]);
     const [sortedTasks, setSortedTasks] = useState([]);
     const [filteredTasks, setFilteredTasks] = useState([]);
     const [temp, setTemp] = useState([]);
     const [archive, setArchive] = useState(false)
 
+    const {
+      transcript,
+      listening,
+      resetTranscript,
+      browserSupportsSpeechRecognition
+    } = useSpeechRecognition();
+    
 
     const handleGetTasks = useCallback (async (uid) => {
         const tasks = await db.getUserTask(uid)
@@ -119,25 +128,22 @@ const TaskList = ({search, isDarkmode}) => {
     //     setSort('createdDesc')
     // }
 
-    const changeLayoutTable = () => {
-        setCurrentLayout('table')
-    }
+    const changeLayout = () => {
 
-    const changeLayoutCards = () => {
-        setCurrentLayout('cards')
-    }
-    
-    const sortPrioAsc = () => {
-      sortedTasks.sort((a, b) => a.priority - b.priority);
-      setTaskLists(sortedTasks);
-      setSort(!sort)
+          setCurrentLayout(!currentLayout)
         
     }
-
-    const sortPrioDesc = () => {
-      sortedTasks.sort((a, b) => b.priority - a.priority);
-      setTaskLists(sortedTasks);
-      setSort(!sort) 
+    const sortPrioAsc = () => {
+      if(sort){
+        sortedTasks.sort((a, b) => a.priority - b.priority);
+        setTaskLists(sortedTasks);
+        setSort(!sort)
+      }else{
+        sortedTasks.sort((a, b) => b.priority - a.priority);
+        setTaskLists(sortedTasks);
+        setSort(!sort) 
+      }
+        
     }
 
     const handleMarkTaskOverdue = async () => {
@@ -145,6 +151,44 @@ const TaskList = ({search, isDarkmode}) => {
         taskslist.map(async(task)=> await db.markTaskOverdue(task.id))
       }
     };
+
+    useEffect(() => {
+      if (listening && transcript) {
+        setTimeout(() => {
+          let command = transcript.split(' ');
+        
+        switch (command[0]) {
+          case 'add':
+            handleShow()
+            resetTranscript();
+            break;
+          case 'sort':
+            sortPrioAsc()
+            resetTranscript();
+            break;
+          case 'change':
+            changeLayout()
+            resetTranscript();
+            break;
+          case 'search':
+            searchTask(command[1])
+            resetTranscript();
+            break;
+          case 'category':
+            filterCategory(command[1])
+            resetTranscript();
+            break;
+          case 'archive':
+            filterArchive('completed')
+            resetTranscript();
+            break;
+          default:
+            resetTranscript();
+        }
+        }, 2700);
+      }
+    });
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -181,9 +225,21 @@ const TaskList = ({search, isDarkmode}) => {
       <Tooltip id="button-tooltip" {...props}>
         Completed Tasks
       </Tooltip>
-
+     )
+    const Mictip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+          <h5>Command List</h5>
+          <p>add: Open add task form</p>
+          <p>sort: Sort priority</p>
+          <p>change: Change layout</p>
+          <p>search + value: Search task</p>
+          <p>category: Filter category</p>
+          <p>archive: See completed Tasks</p>
+        </Tooltip>
     );
-
+    if (!browserSupportsSpeechRecognition) {
+      return <span>Browser doesn't support speech recognition.</span>;
+    }
   return (
     <>
        <div className='tasklist-container'>
@@ -209,19 +265,23 @@ const TaskList = ({search, isDarkmode}) => {
                             <option value="study">Study</option>
                         </select>
                     </div>
-
+                    <OverlayTrigger placement="left" delay={{ show: 250, hide: 400 }} overlay={Mictip}>
+                    {!listening ? 
+                        <button className='task-mic-button' onClick={SpeechRecognition.startListening} style={{backgroundColor:'transparent', borderStyle:'none',display:'flex',alignItems:'center'}} ><img className='mic' src={MicIcon} alt='mic' width='20px' /></button> :
+                        <button className='task-mic-button' onClick={SpeechRecognition.stopListening} style={{backgroundColor:'transparent', borderStyle:'none',display:'flex',alignItems:'center'}} ><img className='mic' src={StopIcon} alt='mic' width='20px' /></button>}
+                    </OverlayTrigger>
                     <div className='sort-buttons' >
-                        {sort? <button onClick={()=>sortPrioDesc()}><img src={sortAscIcon}/></button>:<button onClick={() => sortPrioAsc()}><img src={SortDescIcon} alt='sort' /></button>}
+                        {sort? <button onClick={()=>sortPrioAsc()}><img src={sortAscIcon}/></button>:<button onClick={() => sortPrioAsc()}><img src={SortDescIcon} alt='sort' /></button>}
                     </div>
                     <OverlayTrigger placement="left" delay={{ show: 250, hide: 400 }} overlay={archiveTooltip}>
                       <button style={{backgroundColor:'transparent', borderStyle:'none', display:'flex', alignItems:'center'}} onClick={()=>filterArchive('completed')} ><img src={ArhiveIcon} alt='archived' height='30px' /> </button>
                     </OverlayTrigger>
                     <div className='change-layout'>
-                        {currentLayout === 'table'? <img onClick={()=>changeLayoutCards()} src={isDarkmode?CardLayoutIcon:LayoutIcon} alt="layout" width='25px'/>: <img onClick={()=>changeLayoutTable()} src={isDarkmode? TableLayoutBlue: LayoutIcon2} alt="layout" width='25px'/>}
+                        {currentLayout? <img onClick={()=>changeLayout()} src={isDarkmode?CardLayoutIcon:LayoutIcon} alt="layout" width='25px'/>: <img onClick={()=>changeLayout()} src={isDarkmode? TableLayoutBlue: LayoutIcon2} alt="layout" width='25px'/>}
                     </div>
                 </div>
             </div>
-            {currentLayout === "table" ? (
+            {currentLayout? (
             <TaskTable
                 taskslist={filteredTasks} 
                 sortedTasks={sortedTasks}

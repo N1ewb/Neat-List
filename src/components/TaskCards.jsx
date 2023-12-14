@@ -66,7 +66,7 @@ const TaskCards = ({taskslist,
     useEffect(() => {
         const getTaskList = async () => {
           try {
-            if(currentLayout === 'cards'){
+            if(!currentLayout){
                 setTaskLists(taskslist);
                 const unsubscribe = db.subscribeToTasksChanges((updatedTasks) => {
                     setTaskLists(taskslist);
