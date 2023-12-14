@@ -54,7 +54,7 @@ const TaskList = ({search, isDarkmode}) => {
     const [filteredTasks, setFilteredTasks] = useState([]);
     const [temp, setTemp] = useState([]);
     const [archive, setArchive] = useState(false)
-
+    const notify = (message) => toast(message)
     const {
       transcript,
       listening,
@@ -237,9 +237,7 @@ const TaskList = ({search, isDarkmode}) => {
           <p>archive: See completed Tasks</p>
         </Tooltip>
     );
-    if (!browserSupportsSpeechRecognition) {
-      return <span>Browser doesn't support speech recognition.</span>;
-    }
+    
   return (
     <>
        <div className='tasklist-container'>
@@ -266,9 +264,35 @@ const TaskList = ({search, isDarkmode}) => {
                         </select>
                     </div>
                     <OverlayTrigger placement="left" delay={{ show: 250, hide: 400 }} overlay={Mictip}>
-                    {!listening ? 
-                        <button className='task-mic-button' onClick={SpeechRecognition.startListening} style={{backgroundColor:'transparent', borderStyle:'none',display:'flex',alignItems:'center'}} ><img className='mic' src={MicIcon} alt='mic' width='20px' /></button> :
-                        <button className='task-mic-button' onClick={SpeechRecognition.stopListening} style={{backgroundColor:'transparent', borderStyle:'none',display:'flex',alignItems:'center'}} ><img className='mic' src={StopIcon} alt='mic' width='20px' /></button>}
+                    {!listening ? (
+                      <button
+                        className="task-mic-button"
+                        onClick={browserSupportsSpeechRecognition
+                          ? SpeechRecognition.startListening
+                          : () => notify("Browser doesn't support speech recognition.")}
+                        style={{
+                          backgroundColor: "transparent",
+                          borderStyle: "none",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <img className="mic" src={MicIcon} alt="mic" width="20px" />
+                      </button>
+                    ) : (
+                      <button
+                        className="task-mic-button"
+                        onClick={SpeechRecognition.stopListening}
+                        style={{
+                          backgroundColor: "transparent",
+                          borderStyle: "none",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <img className="mic" src={StopIcon} alt="mic" width="20px" />
+                      </button>
+                    )}
                     </OverlayTrigger>
                     <div className='sort-buttons' >
                         {sort? <button onClick={()=>sortPrioAsc()}><img src={sortAscIcon}/></button>:<button onClick={() => sortPrioAsc()}><img src={SortDescIcon} alt='sort' /></button>}

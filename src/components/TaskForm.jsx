@@ -17,6 +17,7 @@ const TaskForm = ({show, handleClose}) => {
     const db = useDB()
     const auth = useAuth()
     const notifyError = (error) => toast(error)
+    const notify = (message) => toast(message)
     const taskNameRef = useRef()
     const categoryRef = useRef()
     const priorityRef = useRef()
@@ -30,12 +31,7 @@ const TaskForm = ({show, handleClose}) => {
         resetTranscript,
         browserSupportsSpeechRecognition
       } = useSpeechRecognition();
-      if (!browserSupportsSpeechRecognition) {
-        return <span>Browser doesn't support speech recognition.</span>;
-      }
-
-      
-
+ 
     const handleAddTask = async () => {
         var taskName;
         if(transcript){
@@ -73,7 +69,7 @@ const TaskForm = ({show, handleClose}) => {
         }
     };
     
-
+    
   return (
     <>
     <Toaster />
@@ -84,9 +80,35 @@ const TaskForm = ({show, handleClose}) => {
             <Modal.Body>
                 <div className='task-form'>
                     <div className='task-name-wrapper'>
-                    {!listening ? 
-                        <button className='mic-button' onClick={SpeechRecognition.startListening} style={{backgroundColor:'transparent', borderStyle:'none',display:'flex',alignItems:'center'}} ><img className='mic' src={MicIcon} alt='mic' width='20px' /></button> :
-                        <button className='mic-button' onClick={SpeechRecognition.stopListening} style={{backgroundColor:'transparent', borderStyle:'none',display:'flex',alignItems:'center'}} ><img className='mic' src={StopIcon} alt='mic' width='20px' /></button>}
+                        {!listening ? (
+                        <button
+                            className="mic-button"
+                            onClick={browserSupportsSpeechRecognition
+                            ? SpeechRecognition.startListening
+                            : () => notify("Browser doesn't support speech recognition.")}
+                            style={{
+                            backgroundColor: "transparent",
+                            borderStyle: "none",
+                            display: "flex",
+                            alignItems: "center",
+                            }}
+                        >
+                            <img className="mic" src={MicIcon} alt="mic" width="20px" />
+                        </button>
+                        ) : (
+                        <button
+                            className="mic-button"
+                            onClick={SpeechRecognition.stopListening}
+                            style={{
+                            backgroundColor: "transparent",
+                            borderStyle: "none",
+                            display: "flex",
+                            alignItems: "center",
+                            }}
+                        >
+                            <img className="mic" src={StopIcon} alt="mic" width="20px" />
+                        </button>
+                        )}
                         <input name='task-input' placeholder={transcript? transcript: 'Task Name'} ref={taskNameRef} />
                     </div>
                     <label htmlFor="category">Category</label>
